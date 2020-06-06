@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="只要你要、只要我有。倾我所能、尽我所有。我给过你的，给不了第二个人。你给过我的，也请不要再给第二个人。    事情是这样的,公司说要做一个ios的客户端.但系我识条铁咩,我连苹果手机都木有用过啊.启动无限猴子理论,总有总会有一只猴子能做出来的吧,一定会有的吧…">
+  <meta name="description" content="我终于是变成了自己曾经最讨厌的人    事情是这样的,公司说要做一个ios的客户端.但系我识条铁咩,我连苹果手机都木有用过啊.启动无限猴子理论,总有总会有一只猴子能做出来的吧,一定会有的吧…">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ios编译tun2socks库">
 <meta property="og:url" content="http://yoursite.com/2020/05/31/202005311818/index.html">
 <meta property="og:site_name" content="石头记">
-<meta property="og:description" content="只要你要、只要我有。倾我所能、尽我所有。我给过你的，给不了第二个人。你给过我的，也请不要再给第二个人。    事情是这样的,公司说要做一个ios的客户端.但系我识条铁咩,我连苹果手机都木有用过啊.启动无限猴子理论,总有总会有一只猴子能做出来的吧,一定会有的吧…">
+<meta property="og:description" content="我终于是变成了自己曾经最讨厌的人    事情是这样的,公司说要做一个ios的客户端.但系我识条铁咩,我连苹果手机都木有用过啊.启动无限猴子理论,总有总会有一只猴子能做出来的吧,一定会有的吧…">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-31T10:18:30.000Z">
-<meta property="article:modified_time" content="2020-05-31T10:38:04.047Z">
+<meta property="article:modified_time" content="2020-06-06T01:33:22.220Z">
 <meta property="article:author" content="Connor Haw">
 <meta property="article:tag" content="ios">
 <meta name="twitter:card" content="summary">
@@ -128,12 +128,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">10</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">13</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
 
   </li>
   </ul>
@@ -186,10 +186,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-05-31 18:18:30 / 修改时间：18:38:04" itemprop="dateCreated datePublished" datetime="2020-05-31T18:18:30+08:00">2020-05-31</time>
+              <time title="创建时间：2020-05-31 18:18:30" itemprop="dateCreated datePublished" datetime="2020-05-31T18:18:30+08:00">2020-05-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-06 09:33:22" itemprop="dateModified" datetime="2020-06-06T09:33:22+08:00">2020-06-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -211,7 +217,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>  只要你要、只要我有。倾我所能、尽我所有。我给过你的，给不了第二个人。你给过我的，也请不要再给第二个人。</p>
+        <p>  我终于是变成了自己曾经最讨厌的人</p>
 <hr>
 <p>  事情是这样的,公司说要做一个ios的客户端.但系我识条铁咩,我连苹果手机都木有用过啊.启动无限猴子理论,总有总会有一只猴子能做出来的吧,一定会有的吧…</p>
   <a id="more"></a>
@@ -226,37 +232,45 @@
 </li>
 <li><p>过程</p>
 <ul>
-<li>xcode上新建一个工程,建立podfile<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line"></span><br><span class="line">platform :ios, <span class="string">'9.0'</span></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line">def socket</span><br><span class="line">    pod <span class="string">'CocoaAsyncSocket'</span>, <span class="string">'~&gt; 7.4.3'</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">target <span class="string">"xxx"</span> <span class="keyword">do</span></span><br><span class="line">    socket</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">target <span class="string">"PacketProcessor"</span> <span class="keyword">do</span></span><br><span class="line">    socket</span><br><span class="line">end</span><br></pre></td></tr></table></figure></li>
-<li>然后执行pod install</li>
+<li>新建一个工程，新建一个framework的target，在工程的目录下新建一个podfile<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> <span class="string">'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'</span></span><br><span class="line"></span><br><span class="line">platform :ios, <span class="string">'9.0'</span></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line">def socket</span><br><span class="line">    pod <span class="string">'CocoaAsyncSocket'</span>, <span class="string">'~&gt; 7.4.3'</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">target <span class="string">"testxxx"</span> <span class="keyword">do</span></span><br><span class="line">    socket </span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">target <span class="string">"PacketProcessor"</span> <span class="keyword">do</span> </span><br><span class="line">    socket</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+执行 pod install</li>
 </ul>
+<p>把tun2socks-ios及tunnelinterface.m和tunnelinterface.h复制到新项目中</p>
 </li>
 <li><p>配置</p>
 <ul>
-<li>target<ul>
-<li>buildsettings<ul>
-<li>添加头文件项</li>
+<li>build settings</li>
+<li>user header search paths 添加<ul>
+<li>$(inherited)</li>
+<li>“$(SRCROOT)/$(TARGET_NAME)/tun2socks-iOS”</li>
+<li>“$(SRCROOT)/$(TARGET_NAME)/tun2socks-iOS/lwip/src/include”</li>
+<li>“$(SRCROOT)/$(TARGET_NAME)/tun2socks-iOS/lwip/custom”</li>
+<li>“$(SRCROOT)/$(TARGET_NAME)/tun2socks-iOS/lwip/src/include/ipv4”</li>
+<li>“$(SRCROOT)/$(TARGET_NAME)/tun2socks-iOS/lwip/src/include/ipv6”</li>
 </ul>
 </li>
-<li>debug项<ul>
-<li>添加c库的头文件</li>
+<li>c language dialect 改成<ul>
+<li>gun99</li>
 </ul>
 </li>
-<li>c支持<ul>
-<li>修改成GUN99</li>
+<li>c++ language dialect 改成<ul>
+<li>gun++11</li>
 </ul>
 </li>
-<li>c++支持<ul>
-<li>修改成GUN++11</li>
+<li>clang preprocessing 下 preprocessor macros 添加<ul>
+<li>BADVPN_BREACTOR_BADVPN</li>
+<li>BADVPN_FREEBSD</li>
+<li>BADVPN_THREADWORK_USE_PTHREAD</li>
+<li>BADVPN_THREAD_SAFE=1</li>
+<li>BADVPN_USE_KEVENT</li>
+<li>BADVPN_USE_SYSLOG</li>
+<li>BADVPN_LITTLE_ENDIAN</li>
+<li>BADVPN_LIBTSOCKS</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>framework<ul>
-<li>添加librelove/framework</li>
-</ul>
-</li>
-<li>bundleId 修改成自己公司的id</li>
-</ul>
+<li><p>添加自己的bundleId</p>
 </li>
 </ul>
 <ul>
@@ -287,7 +301,10 @@
     <a href="/2020/05/31/202005311800/" rel="prev" title="2020年5月小记">
       <i class="fa fa-chevron-left"></i> 2020年5月小记
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/06/202006060900/" rel="next" title="可执行文件做成一个服务">
+      可执行文件做成一个服务 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -358,20 +375,20 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

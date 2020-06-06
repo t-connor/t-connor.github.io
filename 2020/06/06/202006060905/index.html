@@ -20,20 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="其实没必要非得追求一个答案，你回头看看他做的那些事就是答案。    嗯。。。不知道会不会被屏蔽，哈哈哈">
+  <meta name="description" content="千万不要把自己的软弱展现给别人看，千万不要把自己的狼狈述说给别人听。因为根本没有人会觉得你很可怜，只会觉得你很没用。    事情是这样的，公司要求写一个守护进程的脚本，保证另一个脚本一直在运行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BADVPN学习">
-<meta property="og:url" content="http://yoursite.com/2020/05/23/202005231641/index.html">
+<meta property="og:title" content="使用python编写一个守护进程脚本">
+<meta property="og:url" content="http://yoursite.com/2020/06/06/202006060905/index.html">
 <meta property="og:site_name" content="石头记">
-<meta property="og:description" content="其实没必要非得追求一个答案，你回头看看他做的那些事就是答案。    嗯。。。不知道会不会被屏蔽，哈哈哈">
+<meta property="og:description" content="千万不要把自己的软弱展现给别人看，千万不要把自己的狼狈述说给别人听。因为根本没有人会觉得你很可怜，只会觉得你很没用。    事情是这样的，公司要求写一个守护进程的脚本，保证另一个脚本一直在运行">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-05-23T08:42:01.000Z">
-<meta property="article:modified_time" content="2020-05-31T10:18:10.467Z">
+<meta property="article:published_time" content="2020-06-06T01:09:25.000Z">
+<meta property="article:modified_time" content="2020-06-06T01:23:28.375Z">
 <meta property="article:author" content="Connor Haw">
-<meta property="article:tag" content="vpn">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/05/23/202005231641/">
+<link rel="canonical" href="http://yoursite.com/2020/06/06/202006060905/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>BADVPN学习 | 石头记</title>
+  <title>使用python编写一个守护进程脚本 | 石头记</title>
   
 
 
@@ -164,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/23/202005231641/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/06/202006060905/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +178,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          BADVPN学习
+          使用python编写一个守护进程脚本
         </h1>
 
         <div class="post-meta">
@@ -186,16 +187,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-05-23 16:42:01" itemprop="dateCreated datePublished" datetime="2020-05-23T16:42:01+08:00">2020-05-23</time>
+              <time title="创建时间：2020-06-06 09:09:25 / 修改时间：09:23:28" itemprop="dateCreated datePublished" datetime="2020-06-06T09:09:25+08:00">2020-06-06</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-31 18:18:10" itemprop="dateModified" datetime="2020-05-31T18:18:10+08:00">2020-05-31</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -217,20 +212,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>  其实没必要非得追求一个答案，你回头看看他做的那些事就是答案。</p>
+        <p>  千万不要把自己的软弱展现给别人看，千万不要把自己的狼狈述说给别人听。因为根本没有人会觉得你很可怜，只会觉得你很没用。</p>
 <hr>
-<p>  嗯。。。不知道会不会被屏蔽，哈哈哈<br>  <a id="more"></a></p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="关于OpenVPN"><a href="#关于OpenVPN" class="headerlink" title="关于OpenVPN"></a>关于OpenVPN</h2><pre><code>OpenVPN拥有唯一一个中心节点,所有子用户节点(控制器)都连接在中心节点上,中心节点负责分配虚拟子网IP,密钥协商,推送策略.所有子节点之间的通讯都必须经过中心节点转发,是一个星型拓扑</code></pre><h2 id="关于BADVPN"><a href="#关于BADVPN" class="headerlink" title="关于BADVPN"></a>关于BADVPN</h2><pre><code>BADVPN也拥有一个中心节点,但只作为维护交换机的一个控制器,控制器会构建子节点之间的TLS控制通道,子节点之间的通讯不需要经过中心节点。</code></pre><p>  BADVPN中最主要的控件有两个，一个就是tun2socks，一个就是udpgateway，tun2socks主要的功能就是把流量拦截到tun隧道，然后转化成socks协议进行转发，udpgateway主要功能就是把udp包进行拦截，然后分析。</p>
-<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><h2 id="windows-7-系统"><a href="#windows-7-系统" class="headerlink" title="windows 7 系统"></a>windows 7 系统</h2><ul>
-<li>安装tap虚拟网卡,并为虚拟网卡配置虚拟IP地址(假设为IP:10.10.1.2, GW:10.10.1.0)</li>
-<li>启动客户端、连接控制器并建立隧道</li>
-<li>启动tun2socks客户端(默认端口为2080)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">badvpn-tun2socks --tundev tap0901:&quot;tap1&quot;:10.10.1.2:10.10.1.0:255.255.255.0 --netif-ipaddr 10.10.1.1 --netif-netmask 255.255.255.0 --socks-server-addr 127.0.0.1:2080</span><br></pre></td></tr></table></figure></li>
-<li>把控制器,gateway网关指向本地网卡网关,把默认网关指向虚拟网卡网关<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">route add x.x.x.x&#x2F;32 192.168.1.1 metric 5 </span><br><span class="line">route change  0.0.0.0&#x2F;0  10.10.1.1 metric 6</span><br></pre></td></tr></table></figure></li>
-<li>测试用户是否能连通控制器允许访问资源(curl)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -x socks5h:&#x2F;&#x2F;127.0.0.1:2080 https:&#x2F;&#x2F;www.baidu.com</span><br></pre></td></tr></table></figure>
-<h2 id="linux系统"><a href="#linux系统" class="headerlink" title="linux系统"></a>linux系统</h2>流程与windows7差不多，只不过linux系统是自带的虚拟网卡，直接ifconfig utun0 就能起一个虚拟网卡</li>
-</ul>
-<h2 id="MACOS-系统"><a href="#MACOS-系统" class="headerlink" title="MACOS 系统"></a>MACOS 系统</h2><p>  与linux差不多</p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><pre><code>开启tun2socks后,虚拟网卡会劫持计算机中所有流量,流量会通过虚拟网卡再转发出去.通过控制控制器下发策略,只允许用户访问某些网站,这样就变成了全局VPN模式</code></pre>
+<p>  事情是这样的，公司要求写一个守护进程的脚本，保证另一个脚本一直在运行</p>
+  <a id="more"></a>
+
+<h1 id="人生苦短，用python吧"><a href="#人生苦短，用python吧" class="headerlink" title="人生苦短，用python吧"></a>人生苦短，用python吧</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding : utf-8</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> os, sys, time</span><br><span class="line"> </span><br><span class="line"><span class="comment">#son</span></span><br><span class="line">pid = os.fork()</span><br><span class="line"><span class="keyword">if</span> pid &gt; <span class="number">0</span>:</span><br><span class="line">    sys.exit(<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line">os.chdir(<span class="string">"/"</span>)</span><br><span class="line">os.setsid()</span><br><span class="line">os.umask(<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#grandson</span></span><br><span class="line">pid = os.fork()</span><br><span class="line"><span class="keyword">if</span> pid &gt; <span class="number">0</span>:</span><br><span class="line">    sys.exit(<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line">sys.stdout.flush()</span><br><span class="line">sys.stderr.flush()</span><br><span class="line">si = file(<span class="string">"/dev/null"</span>, <span class="string">'r'</span>)</span><br><span class="line">so = file(<span class="string">"/dev/null"</span>, <span class="string">'a+'</span>)</span><br><span class="line">se = file(<span class="string">"/dev/null"</span>, <span class="string">'a+'</span>, <span class="number">0</span>)</span><br><span class="line">os.dup2(si.fileno(), sys.stdin.fileno())</span><br><span class="line">os.dup2(so.fileno(), sys.stdout.fileno())</span><br><span class="line">os.dup2(se.fileno(), sys.stderr.fileno())</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    tunnel_status = os.popen(<span class="string">"ps -ef | egrep '\&lt;tunnel\&gt;' | grep -v grep | wc -l"</span>)</span><br><span class="line">    text = tunnel_status.read()</span><br><span class="line">    <span class="keyword">if</span> int(text) == <span class="number">0</span>:</span><br><span class="line">        cmd_status = os.popen(<span class="string">"python /home/tunnel/tunnel.py"</span>).read()</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'/var/log/daemon.log'</span>, <span class="string">'ab+'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S The tunnel is restart!!!\r\n"</span>, time.localtime(time.time())))</span><br><span class="line"></span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -239,7 +226,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/vpn/" rel="tag"># vpn</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
           </div>
 
         
@@ -248,12 +236,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/05/23/202005231639/" rel="prev" title="golang web服务器使用https">
-      <i class="fa fa-chevron-left"></i> golang web服务器使用https
+    <a href="/2020/06/06/202006060900/" rel="prev" title="可执行文件做成一个服务">
+      <i class="fa fa-chevron-left"></i> 可执行文件做成一个服务
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/05/31/202005311800/" rel="next" title="2020年5月小记">
-      2020年5月小记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/06/06/202006060912/" rel="next" title="线程与进程">
+      线程与进程 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -313,7 +301,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于OpenVPN"><span class="nav-number">1.1.</span> <span class="nav-text">关于OpenVPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于BADVPN"><span class="nav-number">1.2.</span> <span class="nav-text">关于BADVPN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#流程"><span class="nav-number">2.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-7-系统"><span class="nav-number">2.1.</span> <span class="nav-text">windows 7 系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux系统"><span class="nav-number">2.2.</span> <span class="nav-text">linux系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MACOS-系统"><span class="nav-number">2.3.</span> <span class="nav-text">MACOS 系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#人生苦短，用python吧"><span class="nav-number">1.</span> <span class="nav-text">人生苦短，用python吧</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
