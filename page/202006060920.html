@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在这个世界上，不要太依赖别人。因为即使是你的影子，也会在黑暗时离开你的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库整理">
+<meta property="og:url" content="http://yoursite.com/page/202006060920.html">
+<meta property="og:site_name" content="石头记">
+<meta property="og:description" content="在这个世界上，不要太依赖别人。因为即使是你的影子，也会在黑暗时离开你的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-06T01:24:56.000Z">
+<meta property="article:modified_time" content="2020-06-21T02:10:33.512Z">
+<meta property="article:author" content="Connor Haw">
+<meta property="article:tag" content="sql">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/202006060920.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据库整理 | 石头记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  <script type="text/javascript" color="0,0,0" opacity='0.3' zIndex="-2" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">石头记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">18</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/202006060920.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Connor Haw">
+      <meta itemprop="description" content="逆水行舟，不进则退；顺水行舟，随波逐流。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="石头记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-06 09:24:56" itemprop="dateCreated datePublished" datetime="2020-06-06T09:24:56+08:00">2020-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-21 10:10:33" itemprop="dateModified" datetime="2020-06-21T10:10:33+08:00">2020-06-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">知识梳理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  在这个世界上，不要太依赖别人。因为即使是你的影子，也会在黑暗时离开你的。</p>
+<hr>
+  <a id="more"></a>
+
+<h1 id="数据库的分类"><a href="#数据库的分类" class="headerlink" title="数据库的分类"></a>数据库的分类</h1><ul>
+<li>关系型数据库，把简单的数据结构归类为简单的二维表哥，oracal，mysql</li>
+<li>非关系型数据库，微博、微信、sns需要高性能，高并发，一致性要求不高 nosql <ul>
+<li>键值：使用key-value存储，相当于hashmap的模型，存取速度快，高并发，redis</li>
+<li>面向文档：以文档作为键值，mongodb</li>
+</ul>
+</li>
+</ul>
+<h1 id="数据库三大范式"><a href="#数据库三大范式" class="headerlink" title="数据库三大范式"></a>数据库三大范式</h1><ul>
+<li>每列的原子性(直到不可拆分)</li>
+<li>每列都必须与主键相系</li>
+<li>每列都必须与主键直接相关(消除传递依赖)</li>
+</ul>
+<h1 id="数据库的事务-ACID"><a href="#数据库的事务-ACID" class="headerlink" title="数据库的事务(ACID)"></a>数据库的事务(ACID)</h1><ul>
+<li>原子性<ul>
+<li>每个事物的所有语句都是一个整体，其中一条不成功，整个事务回退</li>
+</ul>
+</li>
+<li>一致性<ul>
+<li>提交了就会有状态的改变，数据库之间相互透明，转账</li>
+</ul>
+</li>
+<li>隔离性<ul>
+<li>每个事务间不会相互影响</li>
+<li>隔离级别<ul>
+<li>读未提交，可能会出现脏读</li>
+<li>读已提交，可能会出现不可重复读</li>
+<li>重复度，可能会出现幻读</li>
+<li>串行，最高级别的隔离，效率低</li>
+</ul>
+</li>
+<li>锁<ul>
+<li>共享锁</li>
+<li>排他锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>持久性<ul>
+<li>数据库崩毁恢复</li>
+<li>系统崩毁恢复</li>
+<li>异地容灾</li>
+</ul>
+</li>
+</ul>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><ul>
+<li>一个操作需要读写多张表的时候，需要用到分布式事务</li>
+<li>PAC理论<ul>
+<li>一致性：数据必须一致</li>
+<li>可用性：所有用户都可以访问到</li>
+<li>分区容忍性：当结点间通讯有问题，允许一定时间内数据不同步</li>
+</ul>
+</li>
+</ul>
+<h2 id="事务的锁"><a href="#事务的锁" class="headerlink" title="事务的锁"></a>事务的锁</h2><ul>
+<li><p>乐观锁</p>
+<ul>
+<li>假定读取资源的过程中，数据不会被修改 ，使用版本控制</li>
+</ul>
+</li>
+<li><p>悲观锁</p>
+<ul>
+<li>假定读取资源的过程中，数据一定会被修改，先把资源锁住，提交完毕再进行释放</li>
+</ul>
+</li>
+<li><p>共享锁</p>
+<ul>
+<li>锁定的资源只能进行读取，不能进行增删改操作，直到该锁释放</li>
+</ul>
+</li>
+<li><p>排他锁</p>
+<ul>
+<li>锁定的资源可以进行读写还有操作</li>
+</ul>
+</li>
+<li><p>死锁</p>
+<ul>
+<li>两个事务或者多个事务在同一资源上相互占用，并请求对方所占用的资源，从而造成恶性循环的现象<ul>
+<li>系统资源不足</li>
+<li>进程运行推进的顺序不当</li>
+<li>资源分配不当</li>
+</ul>
+</li>
+<li>避免死锁的核心思想是</li>
+<li>系统对进程发出每一个资源申请进行动态检查,并根据检查结果决定是否分配资源,如果分配后系统可能发生死锁,则不予分配,否则予以分配.这是一种保证系统不进入不安全或者死锁状态的动态策略</li>
+</ul>
+</li>
+</ul>
+<h1 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h1><ul>
+<li>数据支持的类型 string(字符串)、list(链表)、set(集合)和zset(有序集合)</li>
+<li>支持内存缓存</li>
+<li>支持持久化缓存</li>
+<li>支持主从集群、分布式</li>
+<li>支持队列</li>
+</ul>
+<h2 id="备份持久化"><a href="#备份持久化" class="headerlink" title="备份持久化"></a>备份持久化</h2><ul>
+<li>快照保存：占用内存大，会有损耗</li>
+<li>日志保存：占用内存小，复原的时间长，数据完整性高</li>
+</ul>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><ul>
+<li>有一台作为主机，进行日常的读写操作，一台备机，同步主机的数据库，当主机宕机，自动切换到备机执行</li>
+</ul>
+<h1 id="postgres"><a href="#postgres" class="headerlink" title="postgres"></a>postgres</h1><ul>
+<li>对象-关系型数据库</li>
+<li>登录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql -U admin -d testdb -p 5432</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="postgregraph"><a href="#postgregraph" class="headerlink" title="postgregraph"></a>postgregraph</h2><ul>
+<li>基于postgres的一个图数据库<ul>
+<li>创建图：CREATE GRAPH IF NOT EXISTS network;</li>
+<li>指定用户默认就是使用一个图ALTER DATABASE postgres SET graph_path TO network；</li>
+<li>设置默认图进行查询 SET graph_path = network;</li>
+<li>查询语句<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   MATCH (p:host )-[l:link]-&gt;(t:host) </span><br><span class="line">where p.date &gt;&#x3D; date(&#39;2000-10-12&#39;) and  p.date &lt;&#x3D; date(&#39;2005-10-12&#39;)</span><br><span class="line">return p , l , t</span><br><span class="line">-- delete p,l,t</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql/" rel="tag"># sql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/page/202006060912.html" rel="prev" title="线程与进程">
+      <i class="fa fa-chevron-left"></i> 线程与进程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/page/202006060925.html" rel="next" title="排序算法">
+      排序算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库的分类"><span class="nav-number">1.</span> <span class="nav-text">数据库的分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库三大范式"><span class="nav-number">2.</span> <span class="nav-text">数据库三大范式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库的事务-ACID"><span class="nav-number">3.</span> <span class="nav-text">数据库的事务(ACID)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">3.1.</span> <span class="nav-text">分布式事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的锁"><span class="nav-number">3.2.</span> <span class="nav-text">事务的锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#redis"><span class="nav-number">4.</span> <span class="nav-text">redis</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#备份持久化"><span class="nav-number">4.1.</span> <span class="nav-text">备份持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主从复制"><span class="nav-number">4.2.</span> <span class="nav-text">主从复制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#postgres"><span class="nav-number">5.</span> <span class="nav-text">postgres</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#postgregraph"><span class="nav-number">5.1.</span> <span class="nav-text">postgregraph</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Connor Haw</p>
+  <div class="site-description" itemprop="description">逆水行舟，不进则退；顺水行舟，随波逐流。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <!-- music -->
+      <div>
+        
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="260" height="52" src="//music.163.com/outchain/player?type=0&id=720218262&auto=1&height=32"></iframe>
+        
+      </div>
+
+    </div>
+    
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Connor Haw</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

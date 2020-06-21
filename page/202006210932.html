@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="生命中总有些遇见，惊艳了时光，也惊醒了沉睡中所有的感觉。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang 学习">
+<meta property="og:url" content="http://yoursite.com/page/202006210932.html">
+<meta property="og:site_name" content="石头记">
+<meta property="og:description" content="生命中总有些遇见，惊艳了时光，也惊醒了沉睡中所有的感觉。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-21T01:33:11.000Z">
+<meta property="article:modified_time" content="2020-06-21T02:14:07.322Z">
+<meta property="article:author" content="Connor Haw">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/202006210932.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>golang 学习 | 石头记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  <script type="text/javascript" color="0,0,0" opacity='0.3' zIndex="-2" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">石头记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">18</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/202006210932.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Connor Haw">
+      <meta itemprop="description" content="逆水行舟，不进则退；顺水行舟，随波逐流。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="石头记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          golang 学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-21 09:33:11 / 修改时间：10:14:07" itemprop="dateCreated datePublished" datetime="2020-06-21T09:33:11+08:00">2020-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">知识梳理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  生命中总有些遇见，惊艳了时光，也惊醒了沉睡中所有的感觉。</p>
+<hr>
+  <a id="more"></a>
+
+<h2 id="创建一个新的工程"><a href="#创建一个新的工程" class="headerlink" title="创建一个新的工程"></a>创建一个新的工程</h2><p>  先创建一个文件夹,根目录下创建一个mod.go,然后设置,添加库文件的目录,不需要在github目录下创建文件的</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https代理下载包</span></span><br><span class="line">go env -w GOPROXY=https://goproxy.cn,direct</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置代理</span></span><br><span class="line"><span class="built_in">set</span> http_proxy=socks5://127.0.0.1:9993</span><br><span class="line">http_proxy=socks5://127.0.0.1:9993 GO111MODULE=on go build</span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消代理</span></span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><pre><code>var + 变量名 + 类型   </code></pre><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">int</span>  </span><br><span class="line"><span class="keyword">var</span> b <span class="keyword">string</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	a = <span class="number">1</span></span><br><span class="line">	b := <span class="number">3.14</span></span><br><span class="line">	c char = <span class="string">'a'</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="初始化值"><a href="#初始化值" class="headerlink" title="初始化值"></a>初始化值</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hp (<span class="keyword">int</span>) = <span class="number">500</span></span><br><span class="line">hp := <span class="number">500</span>  <span class="comment">//只能在函数体中</span></span><br></pre></td></tr></table></figure>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a <span class="keyword">string</span> = <span class="string">"abc"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><pre><code>派生类、指针、数组、结构体、channel、函数、切片、接口、MAP表、切片(相当于动态数组 )</code></pre><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myslice [<span class="number">3</span>]<span class="keyword">int</span> = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line"><span class="keyword">var</span> myslice []<span class="keyword">type</span> = <span class="built_in">make</span>([]<span class="keyword">type</span>, <span class="built_in">len</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//func foo(输入参数)(返回参数)&#123;&#125;()</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">(a <span class="keyword">string</span>, b <span class="keyword">int</span>)</span><span class="params">(err error)</span></span>&#123;&#125;()</span><br><span class="line"></span><br><span class="line"><span class="comment">//接口</span></span><br><span class="line"><span class="keyword">type</span> abc <span class="keyword">interface</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="string-byte-互相转化"><a href="#string-byte-互相转化" class="headerlink" title="string byte 互相转化"></a>string byte 互相转化</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bufString := <span class="keyword">string</span>(buf[<span class="number">1</span>:<span class="number">100</span>])</span><br><span class="line">   bufByte := []<span class="keyword">byte</span>(bufString)</span><br></pre></td></tr></table></figure>
+
+<h2 id="channel-go多线程"><a href="#channel-go多线程" class="headerlink" title="channel/go多线程"></a>channel/go多线程</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span>&#123;</span><br><span class="line">		fmt.Println(<span class="string">"dsa"</span>)</span><br><span class="line">		done&lt;<span class="number">-1</span></span><br><span class="line">	&#125;()</span><br><span class="line">	&lt;-done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="读取json文件"><a href="#读取json文件" class="headerlink" title="读取json文件"></a>读取json文件</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"encoding/json"</span></span><br><span class="line"><span class="comment">//解析json的时候,结构体定义的变量首字母需要大写</span></span><br><span class="line"><span class="keyword">type</span> JsonStruct <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span>  <span class="string">`nname`</span></span><br><span class="line">	Age <span class="keyword">int</span> 	<span class="string">`age`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewJsonStruct</span><span class="params">()</span> *<span class="title">JsonStruct</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;JsonStruct&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(jst *JsonStruct)</span> <span class="title">Load</span><span class="params">(filename <span class="keyword">string</span>, v <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">    data, err := ioutil.ReadFile(filename)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err = json.Unmarshal(data, v)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">JsonParse := NewJsonStruct()</span><br><span class="line"></span><br><span class="line">   config := configStruct&#123;&#125;</span><br><span class="line">   JsonParse.Load(<span class="string">"config.json"</span>, &amp;config)</span><br><span class="line">   fmt.Println(config)</span><br></pre></td></tr></table></figure>
+
+<h2 id="defer作用"><a href="#defer作用" class="headerlink" title="defer作用"></a>defer作用</h2><pre><code>在函数执行后再运行，多数用于释放参数
+规则1：被声明时实时解析
+规则2：先进后出
+规则3：可以读取有名返回值</code></pre><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CopyFile</span><span class="params">(dstName, srcName <span class="keyword">string</span>)</span><span class="params">(written <span class="keyword">int64</span>, err error)</span></span> &#123;</span><br><span class="line">	src, err := os.Open(srcName)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> sec.Close()</span><br><span class="line"></span><br><span class="line">	dst, err := os.Create(dstName)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> dst.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> io.Copy(dst, src)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="go-modules"><a href="#go-modules" class="headerlink" title="go modules"></a>go modules</h2><pre><code>go.mod 工程目录下管理依赖包的工具
+go mod init
+set GO111MODULE=off，go命令行将不会支持module功能，寻找依赖包的方式将会沿用旧版本那种通过vendor目录或者GOPATH模式来查找。
+set GO111MODULE=on，go命令行会使用modules，而一点也不会去GOPATH目录下查找。
+set GO111MODULE=auto，默认值，go命令行将会根据当前目录来决定是否启用module功能。这种情况下可以分为两种情形：
+
+ * 当前目录在GOPATH/src之外且该目录包含go.mod文件
+ * 当前文件在包含go.mod文件的目录下面。
+
+git设置/取消代理进行下载 
+set http_proxy=socks5://127.0.0.1:1080
+git config --global --unset http.proxy
+go get -d -t -u github.com/nats-io/nats.go/@v1.8.1
+
+
+gomod基本命令
+1) module 语句指定包的名字(路径)                    packageName
+2) require 语句指定的依赖项模块                      new-path v1.0.0  latest
+3) replace 语句可以替换依赖项模块(重定向包路径)      old-path =&gt; new-path
+4) exclude 语句可以忽略依赖项模块</code></pre><h2 id="获取网页信息"><a href="#获取网页信息" class="headerlink" title="获取网页信息"></a>获取网页信息</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"net/http"</span></span><br><span class="line">response, err := http.Get(<span class="string">"http://127.0.0.1:1088/get_policy"</span>)</span><br><span class="line">   <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">       fmt.Println(<span class="string">"error, can not get the policy"</span>, err.Error())</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> response != <span class="literal">nil</span> &#123;</span><br><span class="line">       <span class="keyword">defer</span> response.Body.Close()</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   body, _ := ioutil.ReadAll(response.Body)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="压力测试"><a href="#压力测试" class="headerlink" title="压力测试"></a>压力测试</h2><pre><code>go test -test.bench=&quot;.*&quot;
+func BenchmarkXXX(b *testing.B) {
+    ...
+}
+在循环体内使用testing.B.N
+
+样例  ns/op == 纳秒/操作</code></pre><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkDirect_New</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> s *Student</span><br><span class="line">   b.ResetTimer()</span><br><span class="line">   <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">	  s = <span class="built_in">new</span>(Student)</span><br><span class="line">   &#125;</span><br><span class="line">   _ = s</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="测试运行时间"><a href="#测试运行时间" class="headerlink" title="测试运行时间"></a>测试运行时间</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t1 := time.Now()</span><br><span class="line"></span><br><span class="line"><span class="comment">//dosomething</span></span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">"using time: "</span>, time.Since(t1))</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> build -ldflags <span class="string">"-s -w"</span> xxx.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+<p>再使用upx工具压缩生成的exe文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upx -9 xxx.exe</span><br></pre></td></tr></table></figure>
+<p>编译时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">const char* _buildTime(void) &#123;</span></span><br><span class="line"><span class="comment">	return __DATE__ " " __TIME__;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"C"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> buildTime = C.GoString(C._buildTime())</span><br></pre></td></tr></table></figure>
+
+<p>goland 交叉编译<br>build 设置 set GOARCH=amd64  (64位编译环境)<br>            set GOARCH=386    (32位编译环境)<br>            set GOOS  linux</p>
+<p>不同系统<br>    // +build windows<br>    // +build linux<br>    // +build darwin<br>    // +build freebsd openbsd netbsd dragonfly darwin</p>
+<h2 id="获取函数名"><a href="#获取函数名" class="headerlink" title="获取函数名"></a>获取函数名</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetFunctionName</span><span class="params">(i <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 输出 "name: main.foo"</span></span><br><span class="line">    fmt.Println(<span class="string">"name:"</span>, GetFunctionName(foo))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>  如果要引用库的时候,使用库的初始化函数,则需要在引用库之前加上 “_”</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>  printf()格式化输出字符串<br>  println()纯字符串</p>
+<p>  处理文件时要注意解码方式</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/page/202006142017.html" rel="prev" title="(转载)可能有用的100多个网站">
+      <i class="fa fa-chevron-left"></i> (转载)可能有用的100多个网站
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/page/202006210935.html" rel="next" title="图片用字符拼凑小程序">
+      图片用字符拼凑小程序 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个新的工程"><span class="nav-number">1.</span> <span class="nav-text">创建一个新的工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明"><span class="nav-number">2.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化值"><span class="nav-number">3.</span> <span class="nav-text">初始化值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常量"><span class="nav-number">4.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">5.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">6.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string-byte-互相转化"><span class="nav-number">7.</span> <span class="nav-text">string byte 互相转化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel-go多线程"><span class="nav-number">8.</span> <span class="nav-text">channel&#x2F;go多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读取json文件"><span class="nav-number">9.</span> <span class="nav-text">读取json文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defer作用"><span class="nav-number">10.</span> <span class="nav-text">defer作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-modules"><span class="nav-number">11.</span> <span class="nav-text">go modules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取网页信息"><span class="nav-number">12.</span> <span class="nav-text">获取网页信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压力测试"><span class="nav-number">13.</span> <span class="nav-text">压力测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试运行时间"><span class="nav-number">14.</span> <span class="nav-text">测试运行时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译"><span class="nav-number">15.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取函数名"><span class="nav-number">16.</span> <span class="nav-text">获取函数名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意"><span class="nav-number">17.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">18.</span> <span class="nav-text">其他</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Connor Haw</p>
+  <div class="site-description" itemprop="description">逆水行舟，不进则退；顺水行舟，随波逐流。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <!-- music -->
+      <div>
+        
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="260" height="52" src="//music.163.com/outchain/player?type=0&id=720218262&auto=1&height=32"></iframe>
+        
+      </div>
+
+    </div>
+    
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Connor Haw</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
