@@ -579,26 +579,6 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/page/undefined.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>ios 编译各种坑</title>
     <url>/page/202006142010.html</url>
     <content><![CDATA[<p>  I’ve been working for few days trying to learn and implement Network monitor on the iPhone. I looked into netstat code from apple, and i lost like 25% of my hair.</p>
@@ -633,6 +613,26 @@ func BenchmarkXXX(b *testing.B) {
       <tags>
         <tag>ios</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/page/undefined.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>ios编译tun2socks库</title>
@@ -750,6 +750,12 @@ func BenchmarkXXX(b *testing.B) {
 
 <p>然后执行运行</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">node main.js</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>nodejs</tag>
+      </tags>
   </entry>
   <entry>
     <title>pyinstaller编译scrapy爬虫脚本</title>
@@ -802,6 +808,26 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
+    <title>tap虚拟网卡在windows7上兼容问题</title>
+    <url>/page/202006251910.html</url>
+    <content><![CDATA[<p>  我恨从前和现在的对比出来的那种落差感。</p>
+<hr>
+  <a id="more"></a>
+
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>  事情是这样的,最近公司研发的项目,在windows系统下,开启全局代理的时候需要用到一个tun/tap的虚拟网卡<br>  这是一个openvpn中的一个组件<br>  在windows7系统下,有些系统太旧,没有更新补丁,导致虚拟网卡的签名认证不通过,无法使用此功能</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ul>
+<li>方案一:帮系统打上windows sp1 的补丁,然后在系统自动更新补丁的地方,手动更新两个补丁KB4474419与KB3033929</li>
+<li>方案二:对于那些无法更新补丁的系统,我们下载了一个openvpn2.3.4版本的虚拟网卡,此网卡的数字签名是旧版本的,可以在windows7任何系统下运行</li>
+</ul>
+]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>vpn</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sql触发器</title>
     <url>/page/202006210940.html</url>
     <content><![CDATA[<p>  我心之所困所扰所念所盼皆为虚妄，所愿所求所奢所望皆为痴念，与她何关？</p>
@@ -829,41 +855,6 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
-    <title>tap虚拟网卡在windows7上兼容问题</title>
-    <url>/page/202006251910.html</url>
-    <content><![CDATA[<p>  我恨从前和现在的对比出来的那种落差感。</p>
-<hr>
-  <a id="more"></a>
-
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>  事情是这样的,最近公司研发的项目,在windows系统下,开启全局代理的时候需要用到一个tun/tap的虚拟网卡<br>  这是一个openvpn中的一个组件<br>  在windows7系统下,有些系统太旧,没有更新补丁,导致虚拟网卡的签名认证不通过,无法使用此功能</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ul>
-<li>方案一:帮系统打上windows sp1 的补丁,然后在系统自动更新补丁的地方,手动更新两个补丁KB4474419与KB3033929</li>
-<li>方案二:对于那些无法更新补丁的系统,我们下载了一个openvpn2.3.4版本的虚拟网卡,此网卡的数字签名是旧版本的,可以在windows7任何系统下运行</li>
-</ul>
-]]></content>
-      <categories>
-        <category>知识梳理</category>
-      </categories>
-      <tags>
-        <tag>vpn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>(转载)tcpdump使用方法</title>
-    <url>/page/202005231626.html</url>
-    <content><![CDATA[<p>  等生活中真有了生老病死这样的大事，你才知道以前的忧伤都是狗屁！</p>
-<hr>
-<p>  tcpdump是linux下用来抓包的一个灰常快捷方便的工具<br>  <a id="more"></a></p>
-<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 监视指定网络接口的数据包</span></span><br><span class="line"><span class="comment"># 如果不指定网卡，默认tcpdump只会监视第一个网络接口，一般是eth0，下面的例子都没有指定网络接口。</span></span><br><span class="line">tcpdump -i eth1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如截获所有210.27.48.1 的主机收到的和发出的所有的数据包</span></span><br><span class="line">tcpdump -i eth1 host 210.27.48.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包，使用命令：</span></span><br><span class="line">tcpdump -i eth0 ip host 210.27.48.1 and ! 210.27.48.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 截获主机210.27.48发出的所有数据（送到dns服务器的包）</span></span><br><span class="line">tcpdump -i eth0 src host 210.27.48</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监视所有送到主机210.27.48的数据包（dns服务器送出的包）</span></span><br><span class="line">tcpdump -i eth0 dst host 210.27.48</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#监视指定主机和端口的数据包</span></span><br><span class="line"><span class="comment"># 如果想要获取主机210.27.48.1接收或发出的telnet包，使用如下命令</span></span><br><span class="line">tcpdump tcp port 23 host 210.27.48.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对本机的udp 123 端口进行监视 123 为ntp的服务端口</span></span><br><span class="line">tcpdump udp port 123 </span><br><span class="line"></span><br><span class="line">tcpdump tcp -i eth1 -s 0 and src net 192.168.1.0/24 -w ./target.cap</span><br><span class="line">(1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型</span><br><span class="line">(2)-i eth1 : 只抓经过接口eth1的包</span><br><span class="line">(3)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24</span><br><span class="line">(4)-w ./target.cap : 保存成<span class="built_in">cap</span>文件，方便用ethereal(即wireshark)分析</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>知识梳理</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>tcpdump</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用python编写一个守护进程脚本</title>
     <url>/page/202006060905.html</url>
     <content><![CDATA[<p>  千万不要把自己的软弱展现给别人看，千万不要把自己的狼狈述说给别人听。因为根本没有人会觉得你很可怜，只会觉得你很没用。</p>
@@ -877,58 +868,6 @@ func BenchmarkXXX(b *testing.B) {
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>冷记忆</title>
-    <url>/page/202005171645.html</url>
-    <content><![CDATA[<p>有我记得，有我知道，便已足够。</p>
-]]></content>
-      <categories>
-        <category>生活点滴</category>
-      </categories>
-      <tags>
-        <tag>cold</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>可执行文件做成一个服务</title>
-    <url>/page/202006060900.html</url>
-    <content><![CDATA[<p>  当你做对的时候，没人会记得；当你做错的时候，连呼吸都是错。</p>
-<hr>
-<p>  一般程序执行 ./只是运行在前台,当离开了当前窗口,程序就会自动挂死,我们一般把程序做成一个服务,可以7x24跑在后台</p>
-<p>  系统：适合在centos7.0以上</p>
-  <a id="more"></a>
-
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>  一般的服务模板<br>xxx.serveice</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"># 应用描述</span><br><span class="line">Description&#x3D; xxx</span><br><span class="line"># 应用文档地址</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"># 进程启动方式，有：simple(默认), forking, oneshot, notify, dbus, idle这几种方式</span><br><span class="line">Type&#x3D;simple</span><br><span class="line"></span><br><span class="line"># 启动程序</span><br><span class="line">WorkingDirectory&#x3D;&#x2F;root&#x2F;sdpplugin&#x2F;plugin_path_check</span><br><span class="line">ExecStart&#x3D;&#x2F;root&#x2F;sdpplugin&#x2F;plugin_path_check&#x2F;plugin_path_check_linux</span><br><span class="line"></span><br><span class="line"># 进程结束后重启方式，可选值有：always, on-success, on-failure, on-abnormal, on-abort, on-watchdog</span><br><span class="line">Restart&#x3D;always</span><br><span class="line"># 重启间隔秒数</span><br><span class="line">RestartSec&#x3D;30</span><br><span class="line"># 标准输出到</span><br><span class="line">StandardOutput&#x3D;syslog</span><br><span class="line"># 标准错误输出到</span><br><span class="line">StandardError&#x3D;syslog</span><br><span class="line"># 设置syslog中log的程序名称</span><br><span class="line">SyslogIdentifier&#x3D;helloexample</span><br><span class="line"># 设置syslog中log类型</span><br><span class="line">SyslogFacility&#x3D;local0</span><br><span class="line"># 设置syslog中log级别，此处为info</span><br><span class="line">SyslogLevel&#x3D;info</span><br><span class="line"># 程序运行时的用户</span><br><span class="line">User&#x3D;root</span><br><span class="line"># 程序运行时分配的组</span><br><span class="line">Group&#x3D;root</span><br><span class="line"># 程序的环境变量</span><br><span class="line">Environment&#x3D;NODE_ENV&#x3D;production</span><br><span class="line"></span><br><span class="line"># 依赖于</span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>必须要修改项:</p>
-<ul>
-<li>Description: 程序描述</li>
-<li>WorkingDirectory: 程序运行目录</li>
-<li>ExecStart: 程序运行指令</li>
-</ul>
-</li>
-<li><p>可选修改项: </p>
-<ul>
-<li>Restart: 程序挂掉后是否要重启</li>
-<li>RestartSec: 重启的间隔时间</li>
-<li>User: 使用什么用户执行该程序</li>
-<li>Group: 使用什么用户组执行该程序</li>
-</ul>
-</li>
-<li><p>修改完毕把该文件放到 /etc/systemd/system/ 目录或者 /usr/lib/systemd/system/ 目录下,然后执行</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 重新加载文件</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"><span class="comment">## 启动程序</span></span><br><span class="line">systemctl start xxx.service</span><br><span class="line"><span class="comment">## 开机启动程序</span></span><br><span class="line">systemctl <span class="built_in">enable</span> xxx.service</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看xxx程序当前的日志(即时刷新)</span></span><br><span class="line">journalctl -f -u xxx.service</span><br><span class="line"><span class="comment"># 查看xxx程序历史日志</span></span><br><span class="line">journalctl -l -u xxx.service</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>知识梳理</category>
-      </categories>
-      <tags>
         <tag>linux</tag>
       </tags>
   </entry>
@@ -1431,6 +1370,50 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
+    <title>线程与进程</title>
+    <url>/page/202006060912.html</url>
+    <content><![CDATA[<p>  不要随便跟别人坦露心声，你要知道，人与人之间的悲欢其实不相通，你的满腹倾言，在别人听来不过是一个故事罢了。</p>
+<hr>
+  <a id="more"></a>
+
+<h1 id="线程是什么"><a href="#线程是什么" class="headerlink" title="线程是什么"></a>线程是什么</h1><p>  线程是CPU调度，程序执行的最小单位，提高系统的并发性，并突破一个进程只能干一样事的缺陷</p>
+<h1 id="进程是什么"><a href="#进程是什么" class="headerlink" title="进程是什么"></a>进程是什么</h1><p>  进程是资源分配的最小单位，</p>
+<h1 id="线程与进程关系"><a href="#线程与进程关系" class="headerlink" title="线程与进程关系"></a>线程与进程关系</h1><ul>
+<li>一个进程可以拥有多个线程，而一个进程可以有多个线程，但至少有一个线程。</li>
+<li>资源分配给进程，同一进程的所有线程共享该进程的所有资源。</li>
+<li>CPU分给线程，即真正在CPU上运行的是线程。</li>
+</ul>
+<h1 id="并行与并发"><a href="#并行与并发" class="headerlink" title="并行与并发"></a>并行与并发</h1><ul>
+<li>并行：计算机系统中能同时执行两个或更多个处理的一种计算方法</li>
+<li>并发：一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机(CPU)上运行，但任一个时刻点上只有一个程序在处理机</li>
+</ul>
+<h1 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h1><ul>
+<li>同步：同步就是指一个进程在执行某个请求的时候，若该请求需要一段时间才能返回信息，那么这个进程将会一直等待下去，直到收到返回信息才继续执行下去</li>
+<li>异步：异步是指进程不需要一直等下去，而是继续执行下面的操作，不管其他进程的状态。当有消息返回时系统会通知进程进行处理，这样可以提高执行的效率。</li>
+</ul>
+<h1 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h1><ul>
+<li>Q：什么是线程安全<ul>
+<li>A：多线程并行时，保证各个线程时安全的正确的执行，没有数据污染，都是原子操作</li>
+</ul>
+</li>
+<li>Q：怎样判断进程发生内存泄漏<ul>
+<li>A：监控程序所占内存，程序运行时间与内存占用呈线性关系</li>
+</ul>
+</li>
+<li>Q：什么是虚拟内存<ul>
+<li>A：windows下，会以一部分的硬盘空间当做为虚拟内存<br>   linux下，/swap空间就是虚拟内存</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>system</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络基础知识点</title>
     <url>/page/202006142000.html</url>
     <content><![CDATA[<p>  好好生活 慢慢相遇</p>
@@ -1539,47 +1522,70 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
-    <title>线程与进程</title>
-    <url>/page/202006060912.html</url>
-    <content><![CDATA[<p>  不要随便跟别人坦露心声，你要知道，人与人之间的悲欢其实不相通，你的满腹倾言，在别人听来不过是一个故事罢了。</p>
+    <title>可执行文件做成一个服务</title>
+    <url>/page/202006060900.html</url>
+    <content><![CDATA[<p>  当你做对的时候，没人会记得；当你做错的时候，连呼吸都是错。</p>
 <hr>
+<p>  一般程序执行 ./只是运行在前台,当离开了当前窗口,程序就会自动挂死,我们一般把程序做成一个服务,可以7x24跑在后台</p>
+<p>  系统：适合在centos7.0以上</p>
   <a id="more"></a>
 
-<h1 id="线程是什么"><a href="#线程是什么" class="headerlink" title="线程是什么"></a>线程是什么</h1><p>  线程是CPU调度，程序执行的最小单位，提高系统的并发性，并突破一个进程只能干一样事的缺陷</p>
-<h1 id="进程是什么"><a href="#进程是什么" class="headerlink" title="进程是什么"></a>进程是什么</h1><p>  进程是资源分配的最小单位，</p>
-<h1 id="线程与进程关系"><a href="#线程与进程关系" class="headerlink" title="线程与进程关系"></a>线程与进程关系</h1><ul>
-<li>一个进程可以拥有多个线程，而一个进程可以有多个线程，但至少有一个线程。</li>
-<li>资源分配给进程，同一进程的所有线程共享该进程的所有资源。</li>
-<li>CPU分给线程，即真正在CPU上运行的是线程。</li>
-</ul>
-<h1 id="并行与并发"><a href="#并行与并发" class="headerlink" title="并行与并发"></a>并行与并发</h1><ul>
-<li>并行：计算机系统中能同时执行两个或更多个处理的一种计算方法</li>
-<li>并发：一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理机(CPU)上运行，但任一个时刻点上只有一个程序在处理机</li>
-</ul>
-<h1 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h1><ul>
-<li>同步：同步就是指一个进程在执行某个请求的时候，若该请求需要一段时间才能返回信息，那么这个进程将会一直等待下去，直到收到返回信息才继续执行下去</li>
-<li>异步：异步是指进程不需要一直等下去，而是继续执行下面的操作，不管其他进程的状态。当有消息返回时系统会通知进程进行处理，这样可以提高执行的效率。</li>
-</ul>
-<h1 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h1><ul>
-<li>Q：什么是线程安全<ul>
-<li>A：多线程并行时，保证各个线程时安全的正确的执行，没有数据污染，都是原子操作</li>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>  一般的服务模板<br>xxx.serveice</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line"># 应用描述</span><br><span class="line">Description&#x3D; xxx</span><br><span class="line"># 应用文档地址</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line"># 进程启动方式，有：simple(默认), forking, oneshot, notify, dbus, idle这几种方式</span><br><span class="line">Type&#x3D;simple</span><br><span class="line"></span><br><span class="line"># 启动程序</span><br><span class="line">WorkingDirectory&#x3D;&#x2F;root&#x2F;sdpplugin&#x2F;plugin_path_check</span><br><span class="line">ExecStart&#x3D;&#x2F;root&#x2F;sdpplugin&#x2F;plugin_path_check&#x2F;plugin_path_check_linux</span><br><span class="line"></span><br><span class="line"># 进程结束后重启方式，可选值有：always, on-success, on-failure, on-abnormal, on-abort, on-watchdog</span><br><span class="line">Restart&#x3D;always</span><br><span class="line"># 重启间隔秒数</span><br><span class="line">RestartSec&#x3D;30</span><br><span class="line"># 标准输出到</span><br><span class="line">StandardOutput&#x3D;syslog</span><br><span class="line"># 标准错误输出到</span><br><span class="line">StandardError&#x3D;syslog</span><br><span class="line"># 设置syslog中log的程序名称</span><br><span class="line">SyslogIdentifier&#x3D;helloexample</span><br><span class="line"># 设置syslog中log类型</span><br><span class="line">SyslogFacility&#x3D;local0</span><br><span class="line"># 设置syslog中log级别，此处为info</span><br><span class="line">SyslogLevel&#x3D;info</span><br><span class="line"># 程序运行时的用户</span><br><span class="line">User&#x3D;root</span><br><span class="line"># 程序运行时分配的组</span><br><span class="line">Group&#x3D;root</span><br><span class="line"># 程序的环境变量</span><br><span class="line">Environment&#x3D;NODE_ENV&#x3D;production</span><br><span class="line"></span><br><span class="line"># 依赖于</span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>必须要修改项:</p>
+<ul>
+<li>Description: 程序描述</li>
+<li>WorkingDirectory: 程序运行目录</li>
+<li>ExecStart: 程序运行指令</li>
 </ul>
 </li>
-<li>Q：怎样判断进程发生内存泄漏<ul>
-<li>A：监控程序所占内存，程序运行时间与内存占用呈线性关系</li>
+<li><p>可选修改项: </p>
+<ul>
+<li>Restart: 程序挂掉后是否要重启</li>
+<li>RestartSec: 重启的间隔时间</li>
+<li>User: 使用什么用户执行该程序</li>
+<li>Group: 使用什么用户组执行该程序</li>
 </ul>
 </li>
-<li>Q：什么是虚拟内存<ul>
-<li>A：windows下，会以一部分的硬盘空间当做为虚拟内存<br>   linux下，/swap空间就是虚拟内存</li>
-</ul>
+<li><p>修改完毕把该文件放到 /etc/systemd/system/ 目录或者 /usr/lib/systemd/system/ 目录下,然后执行</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment">## 重新加载文件</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"><span class="comment">## 启动程序</span></span><br><span class="line">systemctl start xxx.service</span><br><span class="line"><span class="comment">## 开机启动程序</span></span><br><span class="line">systemctl <span class="built_in">enable</span> xxx.service</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
-]]></content>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看xxx程序当前的日志(即时刷新)</span></span><br><span class="line">journalctl -f -u xxx.service</span><br><span class="line"><span class="comment"># 查看xxx程序历史日志</span></span><br><span class="line">journalctl -l -u xxx.service</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>知识梳理</category>
       </categories>
       <tags>
-        <tag>system</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>(转载)tcpdump使用方法</title>
+    <url>/page/202005231626.html</url>
+    <content><![CDATA[<p>  等生活中真有了生老病死这样的大事，你才知道以前的忧伤都是狗屁！</p>
+<hr>
+<p>  tcpdump是linux下用来抓包的一个灰常快捷方便的工具<br>  <a id="more"></a></p>
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 监视指定网络接口的数据包</span></span><br><span class="line"><span class="comment"># 如果不指定网卡，默认tcpdump只会监视第一个网络接口，一般是eth0，下面的例子都没有指定网络接口。</span></span><br><span class="line">tcpdump -i eth1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 例如截获所有210.27.48.1 的主机收到的和发出的所有的数据包</span></span><br><span class="line">tcpdump -i eth1 host 210.27.48.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果想要获取主机210.27.48.1除了和主机210.27.48.2之外所有主机通信的ip包，使用命令：</span></span><br><span class="line">tcpdump -i eth0 ip host 210.27.48.1 and ! 210.27.48.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 截获主机210.27.48发出的所有数据（送到dns服务器的包）</span></span><br><span class="line">tcpdump -i eth0 src host 210.27.48</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监视所有送到主机210.27.48的数据包（dns服务器送出的包）</span></span><br><span class="line">tcpdump -i eth0 dst host 210.27.48</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#监视指定主机和端口的数据包</span></span><br><span class="line"><span class="comment"># 如果想要获取主机210.27.48.1接收或发出的telnet包，使用如下命令</span></span><br><span class="line">tcpdump tcp port 23 host 210.27.48.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对本机的udp 123 端口进行监视 123 为ntp的服务端口</span></span><br><span class="line">tcpdump udp port 123 </span><br><span class="line"></span><br><span class="line">tcpdump tcp -i eth1 -s 0 and src net 192.168.1.0/24 -w ./target.cap</span><br><span class="line">(1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型</span><br><span class="line">(2)-i eth1 : 只抓经过接口eth1的包</span><br><span class="line">(3)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24</span><br><span class="line">(4)-w ./target.cap : 保存成<span class="built_in">cap</span>文件，方便用ethereal(即wireshark)分析</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>tcpdump</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>冷记忆</title>
+    <url>/page/202005171645.html</url>
+    <content><![CDATA[<p>有我记得，有我知道，便已足够。</p>
+]]></content>
+      <categories>
+        <category>生活点滴</category>
+      </categories>
+      <tags>
+        <tag>cold</tag>
       </tags>
   </entry>
 </search>
