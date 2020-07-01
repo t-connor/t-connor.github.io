@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff0132;
+  background: #70f6f6;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1961,6 +1961,12 @@ pre .javascript .function {
 }
 #qr p {
   text-align: center;
+}
+body {
+  background: url("/images/hzj_bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
 }
 .category-all-page .category-all-title {
   text-align: center;
