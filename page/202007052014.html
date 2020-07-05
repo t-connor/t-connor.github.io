@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我环游遍了整个星系，找不到比你更亮的星星    事情是这样的，由于要保护公司某段核心代码，需要把这段代码生成各种系统下可用的静态库，以供其他的组件调用。核心代码中包含有回调函数还有手动申请&#x2F;释放内存的函数，以防有的系统下无法调用，所以先做个打个先锋。做一下demo进行尝试。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何生成静态库">
+<meta property="og:url" content="http://yoursite.com/page/202007052014.html">
+<meta property="og:site_name" content="石头记">
+<meta property="og:description" content="我环游遍了整个星系，找不到比你更亮的星星    事情是这样的，由于要保护公司某段核心代码，需要把这段代码生成各种系统下可用的静态库，以供其他的组件调用。核心代码中包含有回调函数还有手动申请&#x2F;释放内存的函数，以防有的系统下无法调用，所以先做个打个先锋。做一下demo进行尝试。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-05T12:14:34.000Z">
+<meta property="article:modified_time" content="2020-07-05T12:16:54.542Z">
+<meta property="article:author" content="Connor Haw">
+<meta property="article:tag" content="clang">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="lib">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/202007052014.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何生成静态库 | 石头记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  <script type="text/javascript" color="0,0,0" opacity='0.3' zIndex="-2" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">石头记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">21</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/202007052014.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Connor Haw">
+      <meta itemprop="description" content="不因循苟且，尽人事，听天命。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="石头记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何生成静态库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-05 20:14:34 / 修改时间：20:16:54" itemprop="dateCreated datePublished" datetime="2020-07-05T20:14:34+08:00">2020-07-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">知识梳理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  我环游遍了整个星系，找不到比你更亮的星星</p>
+<hr>
+<p>  事情是这样的，由于要保护公司某段核心代码，需要把这段代码生成各种系统下可用的静态库，以供其他的组件调用。核心代码中包含有回调函数还有手动申请/释放内存的函数，以防有的系统下无法调用，所以先做个打个先锋。做一下demo进行尝试。</p>
+  <a id="more"></a>
+
+
+<h1 id="golang编译静态库"><a href="#golang编译静态库" class="headerlink" title="golang编译静态库"></a>golang编译静态库</h1><p>testlib.go</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">//#include &lt;libc.h&gt;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"C"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//export AddNum</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNum</span><span class="params">(int1 <span class="keyword">int</span>, int2 <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> int1 + int2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export SubNum</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SubNum</span><span class="params">(int1 <span class="keyword">int</span>, int2 <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> int1 - int2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export Addperfix</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Addperfix</span><span class="params">(perfix, name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(perfix, <span class="string">"!"</span>, name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export Sayhello</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sayhello</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">string</span>, <span class="keyword">string</span>)</span>, <span class="title">name</span> <span class="title">string</span>)</span> &#123;</span><br><span class="line">    f(<span class="string">"hello"</span>, name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  ps:必须要在需要暴露的函数上头加上//export，不然生成的出来的头文件不会携带该函数。</p>
+<h2 id="golang编译成a库"><a href="#golang编译成a库" class="headerlink" title="golang编译成a库"></a>golang编译成a库</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -buildmode=c-archive -o libtest.a libtest.go</span><br></pre></td></tr></table></figure>
+
+<p>  ps:关于go build buildmode的设置 具体可查看 go help buildmode</p>
+<ul>
+<li>c-archive 编译出来的是静态库和一个头文件</li>
+<li>c-shared 编译出来的是动态库和一个头文件</li>
+</ul>
+<h2 id="golang编译成framework"><a href="#golang编译成framework" class="headerlink" title="golang编译成framework"></a>golang编译成framework</h2><p>  golang编译成framework静态库最好是使用gomobile来进行编译</p>
+<h2 id="golang编译成dll"><a href="#golang编译成dll" class="headerlink" title="golang编译成dll"></a>golang编译成dll</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -buildmode=c-archive -o libtest.dll libtest.go</span><br></pre></td></tr></table></figure>
+
+<h1 id="c编译静态库"><a href="#c编译静态库" class="headerlink" title="c编译静态库"></a>c编译静态库</h1><p>main.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"libtest.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">SubNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 - num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemoryTest</span><span class="params">(<span class="keyword">char</span> **pStr)</span> </span>&#123;</span><br><span class="line">    *pStr = (<span class="keyword">char</span> *) <span class="built_in">malloc</span>(<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(*pStr, <span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfoo</span><span class="params">(<span class="keyword">char</span> *pStr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"get data:%s\n"</span>,pStr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CallbackTest</span><span class="params">(pfoo foo, <span class="keyword">char</span> *pStr)</span> </span>&#123;</span><br><span class="line">    foo(pStr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"start test\n"</span>);</span><br><span class="line">    <span class="keyword">char</span> *str = <span class="literal">NULL</span>;</span><br><span class="line">    GetMemoryTest(&amp;str);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, str);</span><br><span class="line">    <span class="keyword">if</span> (str != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">free</span>(str);</span><br><span class="line">        str = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span> tStr[] = <span class="string">"callback test"</span>;</span><br><span class="line">    CallbackTest(myfoo, tStr);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>testlib.h</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __TESTTEST_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TESTTEST_H__</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(*pfoo)</span><span class="params">(<span class="keyword">char</span> *pStr)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory</span><span class="params">(<span class="keyword">char</span> **pStr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CallbackTest</span><span class="params">(pfoo foo, <span class="keyword">char</span> *pStr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">SubNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="meta-keyword">endif</span></span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="c编译成a库"><a href="#c编译成a库" class="headerlink" title="c编译成a库"></a>c编译成a库</h2><p>可以使用cc/gcc/clang等工具生成</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编译</span></span><br><span class="line">cc -c main.c</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line">cc main.o</span><br><span class="line"><span class="comment"># 打包</span></span><br><span class="line">ar -r libtest.a main.o</span><br></pre></td></tr></table></figure>
+
+<h2 id="c编译成dll"><a href="#c编译成dll" class="headerlink" title="c编译成dll"></a>c编译成dll</h2><p>需要安装winGW</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打包</span></span><br><span class="line">gcc -shared -o libtest.dll main.c</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">gcc -L. -llibtest -o main.exe main.c</span><br></pre></td></tr></table></figure>
+
+<h1 id="objectiveC编译静态库"><a href="#objectiveC编译静态库" class="headerlink" title="objectiveC编译静态库"></a>objectiveC编译静态库</h1><p>testlib.m</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"testlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">testliba</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)AddNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second &#123;</span><br><span class="line">    <span class="keyword">return</span> (First + Second);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)SubNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second &#123;</span><br><span class="line">    <span class="keyword">return</span> (First - Second);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)GetMemory:(<span class="keyword">char</span>**)p &#123;</span><br><span class="line">    *p = (<span class="keyword">char</span> *) malloc(<span class="number">100</span>);</span><br><span class="line">    strcpy(*p, <span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)PrintText &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"测试打印"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)SetDelegateObject:(<span class="keyword">id</span>)cbobject setBackFunctionName:(<span class="built_in">NSString</span> *)selectorName &#123;</span><br><span class="line">    callbackObject = cbobject;</span><br><span class="line">    callbackFunction = selectorName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handleEventObject &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"执行本类的操作"</span>);</span><br><span class="line">    SEL func_selector = <span class="built_in">NSSelectorFromString</span>(callbackFunction);</span><br><span class="line">    <span class="keyword">if</span> ([callbackObject respondsToSelector:func_selector]) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"回调成功..."</span>);</span><br><span class="line">        [callbackObject performSelector:func_selector];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"回调失败..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>testlib.h</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">testliba</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义回调类和回调函数</span></span><br><span class="line">    <span class="keyword">id</span> callbackObject;</span><br><span class="line">    <span class="built_in">NSString</span> *callbackFunction;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)AddNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second;</span><br><span class="line">- (<span class="keyword">int</span>)SubNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second;</span><br><span class="line">- (<span class="keyword">void</span>)GetMemory:(<span class="keyword">char</span>**)p;</span><br><span class="line">- (<span class="keyword">void</span>)SetDelegateObject:(<span class="keyword">id</span>)cbobject setBackFunctionName:(<span class="built_in">NSString</span> *)selectorName;</span><br><span class="line">- (<span class="keyword">void</span>)handleEventObject;</span><br><span class="line">- (<span class="keyword">void</span>)PrintText;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="objC-编译成framework，a"><a href="#objC-编译成framework，a" class="headerlink" title="objC 编译成framework，a"></a>objC 编译成framework，a</h2><p>  使用xcode新建一个静态库的工程，然后加载文件进行编译</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>  编译出来的静态库，<br>  在windows下可以使用静态库查看软件查看其内部结构<br>  在macos下可以用命令lipo -info 和nm 来查看该动态库支持的类型和框架<br>  如果要在ios上使用 x64_86 是使用在模拟器上的 arm64是使用在真机上的 arm7 是使用在ios6以前的系统上的</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>原创技术分享，您的支持将鼓励我继续创作</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpg" alt="Connor Haw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Connor Haw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/clang/" rel="tag"># clang</a>
+              <a href="/tags/golang/" rel="tag"># golang</a>
+              <a href="/tags/ios/" rel="tag"># ios</a>
+              <a href="/tags/lib/" rel="tag"># lib</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/page/202007052010.html" rel="prev" title="自己抓个台式机">
+      <i class="fa fa-chevron-left"></i> 自己抓个台式机
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/page/202007052017.html" rel="next" title="正则匹配">
+      正则匹配 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#golang编译静态库"><span class="nav-number">1.</span> <span class="nav-text">golang编译静态库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#golang编译成a库"><span class="nav-number">1.1.</span> <span class="nav-text">golang编译成a库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#golang编译成framework"><span class="nav-number">1.2.</span> <span class="nav-text">golang编译成framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#golang编译成dll"><span class="nav-number">1.3.</span> <span class="nav-text">golang编译成dll</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c编译静态库"><span class="nav-number">2.</span> <span class="nav-text">c编译静态库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#c编译成a库"><span class="nav-number">2.1.</span> <span class="nav-text">c编译成a库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c编译成dll"><span class="nav-number">2.2.</span> <span class="nav-text">c编译成dll</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#objectiveC编译静态库"><span class="nav-number">3.</span> <span class="nav-text">objectiveC编译静态库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#objC-编译成framework，a"><span class="nav-number">3.1.</span> <span class="nav-text">objC 编译成framework，a</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Connor Haw</p>
+  <div class="site-description" itemprop="description">不因循苟且，尽人事，听天命。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <!-- music -->
+      <div>
+        
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="260" height="52" src="https://music.163.com/outchain/player?type=2&id=1403860789&auto=0&height=32"></iframe>
+        
+      </div>
+
+    </div>
+    
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Connor Haw</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

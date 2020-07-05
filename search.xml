@@ -610,6 +610,40 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
+    <title>go编译ios库文件</title>
+    <url>/page/202007052020.html</url>
+    <content><![CDATA[<p>  既然如此不容易，那么，遇见你，不管我们是什么关系，都代表我真的喜欢你。</p>
+<hr>
+  <a id="more"></a>
+
+<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>  因为ios程序的沙盒机制,无法调用其他可执行文件,所以只能把golang的程序编译成ios的库文件(xx.framework)给程序调用</p>
+<h1 id="安装工具"><a href="#安装工具" class="headerlink" title="安装工具"></a>安装工具</h1><ol>
+<li>安装go<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install go</span><br></pre></td></tr></table></figure></li>
+<li>安装xcode</li>
+<li>安装gomobile<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 从github上面拉取代码</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;mobile</span><br><span class="line">cp -r .&#x2F;mobile&#x2F; $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x&#x2F;mobile&#x2F;</span><br><span class="line"># install安装gomobile, 安装完后,在$GOPATH&#x2F;src&#x2F;bin目录下会生成可执行的gomobile文件</span><br><span class="line">go install golang.org&#x2F;x&#x2F;mobile&#x2F;cmd&#x2F;gomobile</span><br><span class="line"># cd 目录到$GOPATH&#x2F;src&#x2F;bin, 执行初始化,生成gobind文件</span><br><span class="line">gomobie init</span><br><span class="line"># 把命令添加到全局使用</span><br><span class="line">touch ~&#x2F;.bash_profile</span><br><span class="line">vi ~&#x2F;.bash_profile</span><br><span class="line">export PATH&#x3D;$GOPATH&#x2F;bin&#x2F;:$PATH</span><br><span class="line">source ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h1><p>  把需要编译的文件或者包放到go工作目录下执行,即可在对应目录下生成xx.framework文件,例子<br>  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gomobile bind -target&#x3D;ios golang.org&#x2F;x&#x2F;mobile&#x2F;example&#x2F;bind&#x2F;hello</span><br></pre></td></tr></table></figure></p>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><ol>
+<li>把xx.framework文件中VERSION文件夹中的A提取出来重命名为xx.framework</li>
+<li>在xcode中,TARGET-&gt;General-&gt;Frameworks,Libraries,and Embedded Content 导入xx.framework</li>
+<li>TARGET-&gt;Build Settings-&gt;Header Search Path 添加一行 $SRCROOT 属性是recureive(递归寻找)</li>
+<li>头文件引用#import “xx/xx.objc.h” 即可使用相关的函数 </li>
+</ol>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><ol>
+<li>gomobile暂不支持go.mod模式,编译前需要先把go.mod关闭 set GO111MODULE=off</li>
+<li>gomobile对导出的函数/方法有些<a href="https://godoc.org/golang.org/x/mobile/cmd/gobind#hdr-Type_restrictions" target="_blank" rel="noopener">限制</a>,暂时不支持字符串切片类型([]string)的转换</li>
+</ol>
+]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>ios， golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/page/undefined.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
@@ -918,18 +952,6 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
-    <title>冷记忆</title>
-    <url>/page/202005171645.html</url>
-    <content><![CDATA[<p>有我记得，有我知道，便已足够。</p>
-]]></content>
-      <categories>
-        <category>生活点滴</category>
-      </categories>
-      <tags>
-        <tag>cold</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>可执行文件做成一个服务</title>
     <url>/page/202006060900.html</url>
     <content><![CDATA[<p>  当你做对的时候，没人会记得；当你做错的时候，连呼吸都是错。</p>
@@ -967,6 +989,18 @@ func BenchmarkXXX(b *testing.B) {
       </categories>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>冷记忆</title>
+    <url>/page/202005171645.html</url>
+    <content><![CDATA[<p>有我记得，有我知道，便已足够。</p>
+]]></content>
+      <categories>
+        <category>生活点滴</category>
+      </categories>
+      <tags>
+        <tag>cold</tag>
       </tags>
   </entry>
   <entry>
@@ -1099,6 +1133,60 @@ func BenchmarkXXX(b *testing.B) {
       </categories>
       <tags>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何生成静态库</title>
+    <url>/page/202007052014.html</url>
+    <content><![CDATA[<p>  我环游遍了整个星系，找不到比你更亮的星星</p>
+<hr>
+<p>  事情是这样的，由于要保护公司某段核心代码，需要把这段代码生成各种系统下可用的静态库，以供其他的组件调用。核心代码中包含有回调函数还有手动申请/释放内存的函数，以防有的系统下无法调用，所以先做个打个先锋。做一下demo进行尝试。</p>
+  <a id="more"></a>
+
+
+<h1 id="golang编译静态库"><a href="#golang编译静态库" class="headerlink" title="golang编译静态库"></a>golang编译静态库</h1><p>testlib.go</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">//#include &lt;libc.h&gt;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"C"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//export AddNum</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddNum</span><span class="params">(int1 <span class="keyword">int</span>, int2 <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> int1 + int2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export SubNum</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SubNum</span><span class="params">(int1 <span class="keyword">int</span>, int2 <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> int1 - int2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export Addperfix</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Addperfix</span><span class="params">(perfix, name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    fmt.Println(perfix, <span class="string">"!"</span>, name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//export Sayhello</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sayhello</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">string</span>, <span class="keyword">string</span>)</span>, <span class="title">name</span> <span class="title">string</span>)</span> &#123;</span><br><span class="line">    f(<span class="string">"hello"</span>, name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  ps:必须要在需要暴露的函数上头加上//export，不然生成的出来的头文件不会携带该函数。</p>
+<h2 id="golang编译成a库"><a href="#golang编译成a库" class="headerlink" title="golang编译成a库"></a>golang编译成a库</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">go build -buildmode=c-archive -o libtest.a libtest.go</span><br></pre></td></tr></table></figure>
+
+<p>  ps:关于go build buildmode的设置 具体可查看 go help buildmode</p>
+<ul>
+<li>c-archive 编译出来的是静态库和一个头文件</li>
+<li>c-shared 编译出来的是动态库和一个头文件</li>
+</ul>
+<h2 id="golang编译成framework"><a href="#golang编译成framework" class="headerlink" title="golang编译成framework"></a>golang编译成framework</h2><p>  golang编译成framework静态库最好是使用gomobile来进行编译</p>
+<h2 id="golang编译成dll"><a href="#golang编译成dll" class="headerlink" title="golang编译成dll"></a>golang编译成dll</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">go build -buildmode=c-archive -o libtest.dll libtest.go</span><br></pre></td></tr></table></figure>
+
+<h1 id="c编译静态库"><a href="#c编译静态库" class="headerlink" title="c编译静态库"></a>c编译静态库</h1><p>main.c</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"libtest.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">SubNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> num1 - num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemoryTest</span><span class="params">(<span class="keyword">char</span> **pStr)</span> </span>&#123;</span><br><span class="line">    *pStr = (<span class="keyword">char</span> *) <span class="built_in">malloc</span>(<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(*pStr, <span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfoo</span><span class="params">(<span class="keyword">char</span> *pStr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"get data:%s\n"</span>,pStr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CallbackTest</span><span class="params">(pfoo foo, <span class="keyword">char</span> *pStr)</span> </span>&#123;</span><br><span class="line">    foo(pStr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"start test\n"</span>);</span><br><span class="line">    <span class="keyword">char</span> *str = <span class="literal">NULL</span>;</span><br><span class="line">    GetMemoryTest(&amp;str);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, str);</span><br><span class="line">    <span class="keyword">if</span> (str != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">free</span>(str);</span><br><span class="line">        str = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span> tStr[] = <span class="string">"callback test"</span>;</span><br><span class="line">    CallbackTest(myfoo, tStr);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>testlib.h</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __TESTTEST_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __TESTTEST_H__</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(*pfoo)</span><span class="params">(<span class="keyword">char</span> *pStr)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory</span><span class="params">(<span class="keyword">char</span> **pStr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CallbackTest</span><span class="params">(pfoo foo, <span class="keyword">char</span> *pStr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">SubNum</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="meta-keyword">endif</span></span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="c编译成a库"><a href="#c编译成a库" class="headerlink" title="c编译成a库"></a>c编译成a库</h2><p>可以使用cc/gcc/clang等工具生成</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编译</span></span><br><span class="line">cc -c main.c</span><br><span class="line"><span class="comment"># 连接</span></span><br><span class="line">cc main.o</span><br><span class="line"><span class="comment"># 打包</span></span><br><span class="line">ar -r libtest.a main.o</span><br></pre></td></tr></table></figure>
+
+<h2 id="c编译成dll"><a href="#c编译成dll" class="headerlink" title="c编译成dll"></a>c编译成dll</h2><p>需要安装winGW</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 打包</span></span><br><span class="line">gcc -shared -o libtest.dll main.c</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">gcc -L. -llibtest -o main.exe main.c</span><br></pre></td></tr></table></figure>
+
+<h1 id="objectiveC编译静态库"><a href="#objectiveC编译静态库" class="headerlink" title="objectiveC编译静态库"></a>objectiveC编译静态库</h1><p>testlib.m</p>
+<figure class="highlight objectivec"><table><tr><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"testlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">testliba</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)AddNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second &#123;</span><br><span class="line">    <span class="keyword">return</span> (First + Second);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)SubNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second &#123;</span><br><span class="line">    <span class="keyword">return</span> (First - Second);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)GetMemory:(<span class="keyword">char</span>**)p &#123;</span><br><span class="line">    *p = (<span class="keyword">char</span> *) malloc(<span class="number">100</span>);</span><br><span class="line">    strcpy(*p, <span class="string">"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)PrintText &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"测试打印"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)SetDelegateObject:(<span class="keyword">id</span>)cbobject setBackFunctionName:(<span class="built_in">NSString</span> *)selectorName &#123;</span><br><span class="line">    callbackObject = cbobject;</span><br><span class="line">    callbackFunction = selectorName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handleEventObject &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"执行本类的操作"</span>);</span><br><span class="line">    SEL func_selector = <span class="built_in">NSSelectorFromString</span>(callbackFunction);</span><br><span class="line">    <span class="keyword">if</span> ([callbackObject respondsToSelector:func_selector]) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"回调成功..."</span>);</span><br><span class="line">        [callbackObject performSelector:func_selector];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"回调失败..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>testlib.h</p>
+<figure class="highlight objectivec"><table><tr><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">testliba</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义回调类和回调函数</span></span><br><span class="line">    <span class="keyword">id</span> callbackObject;</span><br><span class="line">    <span class="built_in">NSString</span> *callbackFunction;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">int</span>)AddNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second;</span><br><span class="line">- (<span class="keyword">int</span>)SubNum:(<span class="keyword">int</span>)First andSecond:(<span class="keyword">int</span>)Second;</span><br><span class="line">- (<span class="keyword">void</span>)GetMemory:(<span class="keyword">char</span>**)p;</span><br><span class="line">- (<span class="keyword">void</span>)SetDelegateObject:(<span class="keyword">id</span>)cbobject setBackFunctionName:(<span class="built_in">NSString</span> *)selectorName;</span><br><span class="line">- (<span class="keyword">void</span>)handleEventObject;</span><br><span class="line">- (<span class="keyword">void</span>)PrintText;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="objC-编译成framework，a"><a href="#objC-编译成framework，a" class="headerlink" title="objC 编译成framework，a"></a>objC 编译成framework，a</h2><p>  使用xcode新建一个静态库的工程，然后加载文件进行编译</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>  编译出来的静态库，<br>  在windows下可以使用静态库查看软件查看其内部结构<br>  在macos下可以用命令lipo -info 和nm 来查看该动态库支持的类型和框架<br>  如果要在ios上使用 x64_86 是使用在模拟器上的 arm64是使用在真机上的 arm7 是使用在ios6以前的系统上的</p>
+]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>clang</tag>
+        <tag>golang</tag>
+        <tag>ios</tag>
+        <tag>lib</tag>
       </tags>
   </entry>
   <entry>
@@ -1468,6 +1556,45 @@ func BenchmarkXXX(b *testing.B) {
       </tags>
   </entry>
   <entry>
+    <title>正则匹配</title>
+    <url>/page/202007052017.html</url>
+    <content><![CDATA[<p>  陌生人可以变成熟人，但熟人一旦变成陌生人，就再也回不去了。</p>
+<hr>
+  <a id="more"></a>
+
+<h1 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h1><ul>
+<li>特殊字符<ul>
+<li>* :零个或多个</li>
+<li>+ :一个或多个</li>
+<li>? :任意值</li>
+<li>():标记开始</li>
+<li>\d:数字</li>
+<li>\w:所有字符</li>
+<li>\s:空格</li>
+<li>^$:匹配的开始与结束</li>
+</ul>
+</li>
+<li>限定字符<ul>
+<li>{n}: 确定匹配n次</li>
+<li>{n,}:至少匹配n次</li>
+<li>{n,m}:匹配n到m次 s.t. [0-9]{1,2} 100以内的数</li>
+</ul>
+</li>
+</ul>
+<h2 id="一般常用的正则匹配式"><a href="#一般常用的正则匹配式" class="headerlink" title="一般常用的正则匹配式"></a>一般常用的正则匹配式</h2>  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">邮箱:^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$</span><br><span class="line">手机号码:^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d&#123;8&#125;$</span><br><span class="line">身份证号:^\d&#123;15&#125;|\d&#123;18&#125;$</span><br><span class="line">ipv4地址:^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d))&#123;3&#125;$</span><br><span class="line">ipv6地址:^([\da-fA-F]&#123;1,4&#125;:)&#123;6&#125;((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^::([\da-fA-F]&#123;1,4&#125;:)&#123;0,4&#125;((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^([\da-fA-F]&#123;1,4&#125;:):([\da-fA-F]&#123;1,4&#125;:)&#123;0,3&#125;((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^([\da-fA-F]&#123;1,4&#125;:)&#123;2&#125;:([\da-fA-F]&#123;1,4&#125;:)&#123;0,2&#125;((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^([\da-fA-F]&#123;1,4&#125;:)&#123;3&#125;:([\da-fA-F]&#123;1,4&#125;:)&#123;0,1&#125;((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^([\da-fA-F]&#123;1,4&#125;:)&#123;4&#125;:((25[0-5]|2[0-4]\d|[01]?\d\d?)\.)&#123;3&#125;(25[0-5]|2[0-4]\d|[01]?\d\d?)|^([\da-fA-F]&#123;1,4&#125;:)&#123;7&#125;[\da-fA-F]&#123;1,4&#125;|^:((:[\da-fA-F]&#123;1,4&#125;)&#123;1,6&#125;|:)|^[\da-fA-F]&#123;1,4&#125;:((:[\da-fA-F]&#123;1,4&#125;)&#123;1,5&#125;|:)|^([\da-fA-F]&#123;1,4&#125;:)&#123;2&#125;((:[\da-fA-F]&#123;1,4&#125;)&#123;1,4&#125;|:)|^([\da-fA-F]&#123;1,4&#125;:)&#123;3&#125;((:[\da-fA-F]&#123;1,4&#125;)&#123;1,3&#125;|:)|^([\da-fA-F]&#123;1,4&#125;:)&#123;4&#125;((:[\da-fA-F]&#123;1,4&#125;)&#123;1,2&#125;|:)|^([\da-fA-F]&#123;1,4&#125;:)&#123;5&#125;:([\da-fA-F]&#123;1,4&#125;)?|^([\da-fA-F]&#123;1,4&#125;:)&#123;6&#125;:</span><br></pre></td></tr></table></figure>
+
+<h1 id="golang下的正则匹配简单代码"><a href="#golang下的正则匹配简单代码" class="headerlink" title="golang下的正则匹配简单代码"></a>golang下的正则匹配简单代码</h1><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"regexp"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	text := <span class="string">`Hello 世界！123 Go.`</span></span><br><span class="line"> </span><br><span class="line">	reg := regexp.MustCompile(<span class="string">`[a-z]+`</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg.FindAllString(text, <span class="number">-1</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="python下的正则匹配简单代码"><a href="#python下的正则匹配简单代码" class="headerlink" title="python下的正则匹配简单代码"></a>python下的正则匹配简单代码</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># coding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">text = <span class="string">"hahahahahahahahahahahahahaxixixixixixixxixixixixixixixixiixix"</span></span><br><span class="line">rex1 = <span class="string">r'&lt;a href="(.*?)" title=".*?".*?&gt;.*?&lt;/a&gt;'</span></span><br><span class="line">urltitle = re.findall(rex1, text)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>知识梳理</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>线程与进程</title>
     <url>/page/202006060912.html</url>
     <content><![CDATA[<p>  不要随便跟别人坦露心声，你要知道，人与人之间的悲欢其实不相通，你的满腹倾言，在别人听来不过是一个故事罢了。</p>
@@ -1618,5 +1745,49 @@ func BenchmarkXXX(b *testing.B) {
       <tags>
         <tag>network</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>自己抓个台式机</title>
+    <url>/page/202007052010.html</url>
+    <content><![CDATA[<p>  都这么大年纪了，就不要再玩小时候暗恋那套了，喜欢就上啊。不过啊超级怂的一个渣渣~~</p>
+<hr>
+<p>  最近的我的手提好像快不行了,也用了好几年了,就想换台台式,先做下功课。备个案</p>
+  <a id="more"></a>
+
+<h1 id="主板"><a href="#主板" class="headerlink" title="主板"></a>主板</h1><ul>
+<li>微星B360M Gaming Plus(530)</li>
+<li>微星B360M MORTAR迫击炮 (679)<h1 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h1></li>
+<li>英特尔I5-8500散片(1330)</li>
+<li>英特尔I5-9400F处理器 2.9GHz 6核6线程 (1179)<h1 id="显卡"><a href="#显卡" class="headerlink" title="显卡"></a>显卡</h1></li>
+<li>迪兰Radeon RX 560(260)</li>
+<li>蓝宝石(Sapphire)RX590 8G (1349)</li>
+<li>蓝宝石RX560D</li>
+<li>迪兰(Dataland)RX 590 8G (1329)</li>
+<li>盈通 rx590</li>
+<li>AMD显卡rx590 (1799)<h1 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h1></li>
+<li>WD 500G M.2固态硬盘(570)</li>
+<li>西部数据 500GB SSD固态硬盘 M.2接口(NVMe协议)(699)</li>
+<li>西数蓝盘 1T (275) 760p固态硬盘256GB (373)</li>
+<li>西数黑盘 <h1 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h1></li>
+<li>海盗船 DDR4 2666 16GB 两条(510 × 2)</li>
+<li>金士顿 DDR4 2666 16GB 两条(549 × 2)</li>
+<li>威刚  DDR4 3000mHz 8GB 两条 (829)<h1 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h1></li>
+<li>安钛克BP450(210)</li>
+<li>爱国者电竞500 (259)<h1 id="风扇"><a href="#风扇" class="headerlink" title="风扇"></a>风扇</h1></li>
+<li>玄冰400(80)</li>
+<li>猫头鹰风扇NH-L9i<h1 id="机箱"><a href="#机箱" class="headerlink" title="机箱"></a>机箱</h1></li>
+<li>酷冷至尊Q300L(260)</li>
+<li>其他随意(250)<h1 id="无线网卡"><a href="#无线网卡" class="headerlink" title="无线网卡"></a>无线网卡</h1></li>
+<li>BCM94360CD(150)</li>
+<li>BCM94352Z<h1 id="显示器"><a href="#显示器" class="headerlink" title="显示器"></a>显示器</h1></li>
+<li>优派 27英寸显示器 IPS显示屏 4K版 (VX2780-4K-HD)(1899)</li>
+<li>飞利浦271e9 2k IPS (899-1200)<h1 id="音响"><a href="#音响" class="headerlink" title="音响"></a>音响</h1></li>
+<li>漫步者 R1700BT 4英寸2.0电脑音响(529)<h1 id="键鼠"><a href="#键鼠" class="headerlink" title="键鼠"></a>键鼠</h1></li>
+<li>..</li>
+</ul>
+]]></content>
+      <categories>
+        <category>其他东东</category>
+      </categories>
   </entry>
 </search>
