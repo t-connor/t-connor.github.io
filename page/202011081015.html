@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="202011081015">
-<meta property="og:url" content="http://yoursite.com/page/null.html">
+  <meta name="description" content="人的感情就像牙齿，掉了就没了，再装也是假的，掉了的东西就不要捡了，接受突如其来的失去，珍惜不期而遇的惊喜。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个国企后自动删除数据的map">
+<meta property="og:url" content="http://yoursite.com/page/202011081015.html">
 <meta property="og:site_name" content="石头记">
+<meta property="og:description" content="人的感情就像牙齿，掉了就没了，再装也是假的，掉了的东西就不要捡了，接受突如其来的失去，珍惜不期而遇的惊喜。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-08T02:15:35.000Z">
-<meta property="article:modified_time" content="2020-11-08T02:15:35.806Z">
+<meta property="article:modified_time" content="2020-11-15T01:27:47.403Z">
 <meta property="article:author" content="Connor Haw">
+<meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/page/null.html">
+<link rel="canonical" href="http://yoursite.com/page/202011081015.html">
 
 
 <script id="page-configurations">
@@ -43,7 +46,7 @@
   };
 </script>
 
-  <title>202011081015 | 石头记</title>
+  <title>实现一个国企后自动删除数据的map | 石头记</title>
   
 
 
@@ -189,7 +192,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/null.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/202011081015.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +205,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          202011081015
+          实现一个国企后自动删除数据的map
         </h1>
 
         <div class="post-meta">
@@ -213,6 +216,22 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2020-11-08 10:15:35" itemprop="dateCreated datePublished" datetime="2020-11-08T10:15:35+08:00">2020-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-15 09:27:47" itemprop="dateModified" datetime="2020-11-15T09:27:47+08:00">2020-11-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">知识梳理</span></a>
+                </span>
             </span>
 
           
@@ -233,8 +252,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
+        <p>  人的感情就像牙齿，掉了就没了，再装也是假的，掉了的东西就不要捡了，接受突如其来的失去，珍惜不期而遇的惊喜。</p>
+<hr>
   <a id="more"></a>
+
+<p>  就是做一个map，可以自动设置过期时间，过期后数据要自动删除，线程安全<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">  package  x_expireMap</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;com.x.base&#x2F;util&#x2F;x_log&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">map表,每个参数带一个timeout属性,如果超过时间了,从map中删除</span><br><span class="line">申请后,需要手动停止</span><br><span class="line"> *&#x2F;</span><br><span class="line"></span><br><span class="line">type ExpireMap struct &#123;</span><br><span class="line">	&#x2F;&#x2F;存放所有数据的 map</span><br><span class="line">	Data 		sync.Map</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;初始化过期的时间</span><br><span class="line">	timeout 	int64</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;一个用过期时间节点为key的一个map,为了遍历的时候不循环的整个load整个的map</span><br><span class="line">	timeMap 	map[int64][]interface&#123;&#125;</span><br><span class="line"></span><br><span class="line">	lock 		sync.Mutex</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;一个停止的chan</span><br><span class="line">	ch 			chan interface&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">初始化的时候可以选择超时时间,单位为秒</span><br><span class="line"> *&#x2F;</span><br><span class="line">func NewExpireMap(timeout int64) *ExpireMap &#123;</span><br><span class="line">	if timeout &#x3D;&#x3D; 0 &#123;</span><br><span class="line">		timeout &#x3D; 10</span><br><span class="line">	&#125;</span><br><span class="line">	e :&#x3D; ExpireMap &#123;</span><br><span class="line">		Data: sync.Map&#123;&#125;,</span><br><span class="line">		timeout:timeout,</span><br><span class="line">		timeMap: make(map[int64][]interface&#123;&#125;),</span><br><span class="line">		lock: sync.Mutex&#123;&#125;,</span><br><span class="line">		ch: make(chan interface&#123;&#125;),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	go e.check(time.Now().Unix())</span><br><span class="line">	return &amp;e</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">查找</span><br><span class="line"> *&#x2F;</span><br><span class="line">func (e *ExpireMap) check(nowTime int64) &#123;</span><br><span class="line">	t :&#x3D; time.NewTicker(1 * time.Second)</span><br><span class="line"></span><br><span class="line">	for &#123;</span><br><span class="line">		select &#123;</span><br><span class="line">		case &lt;-t.C:</span><br><span class="line">			nowTime++</span><br><span class="line"></span><br><span class="line">			if key, ok :&#x3D; e.timeMap[nowTime]; ok &#123;</span><br><span class="line">				e.deleteData(key, nowTime)</span><br><span class="line">			&#125;</span><br><span class="line">		case &lt;-e.ch:</span><br><span class="line">			x_log.Debug(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;ExpireMap stop&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;)</span><br><span class="line">			return</span><br><span class="line">		default:</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">添加一个data到map中</span><br><span class="line"> *&#x2F;</span><br><span class="line">func (e *ExpireMap) Add(data interface&#123;&#125;) &#123;</span><br><span class="line">	e.lock.Lock()</span><br><span class="line">	defer e.lock.Unlock()</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;已经有就不再添加了</span><br><span class="line">	if e.Get(data) &#123;</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	tt :&#x3D; time.Now().Unix() + e.timeout</span><br><span class="line"></span><br><span class="line">	e.Data.Store(data, tt)</span><br><span class="line">	e.timeMap[tt] &#x3D; append(e.timeMap[tt], data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">过期的时候删除data</span><br><span class="line"> *&#x2F;</span><br><span class="line">func (e *ExpireMap) deleteData(data []interface&#123;&#125;, t int64) &#123;</span><br><span class="line">	e.lock.Lock()</span><br><span class="line">	defer e.lock.Unlock()</span><br><span class="line"></span><br><span class="line">	delete(e.timeMap, t)</span><br><span class="line"></span><br><span class="line">	for _, dd :&#x3D; range data &#123;</span><br><span class="line">		e.Data.Delete(dd)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;*</span><br><span class="line">检测这个data 是否存在</span><br><span class="line"> *&#x2F;</span><br><span class="line">func (e *ExpireMap) Get(data interface&#123;&#125;) bool &#123;</span><br><span class="line"></span><br><span class="line">	timeout, ok :&#x3D; e.Data.Load(data)</span><br><span class="line">	if ok &amp;&amp; time.Now().Unix() &lt; timeout.(int64) &#123;</span><br><span class="line">		return true</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (e *ExpireMap) Stop () &#123;</span><br><span class="line">	e.lock.Lock()</span><br><span class="line">	defer e.lock.Unlock()</span><br><span class="line">	e.ch &lt;- 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
     </div>
 
     
@@ -262,6 +285,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
 
         
 
