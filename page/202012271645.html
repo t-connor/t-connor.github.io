@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这辈子都没有过什么优越感，光不自卑就已经用尽了全力    自己写的一个树形结构，作用是保存(广东省)区下两级的地区码，以后应该可以用于其他树形的用途，稍作记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树的实现">
+<meta property="og:url" content="http://yoursite.com/page/202012271645.html">
+<meta property="og:site_name" content="石头记">
+<meta property="og:description" content="这辈子都没有过什么优越感，光不自卑就已经用尽了全力    自己写的一个树形结构，作用是保存(广东省)区下两级的地区码，以后应该可以用于其他树形的用途，稍作记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-27T08:44:07.000Z">
+<meta property="article:modified_time" content="2020-12-27T08:52:32.139Z">
+<meta property="article:author" content="Connor Haw">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/202012271645.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>树的实现 | 石头记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  
+  <script type="text/javascript" color="0,0,0" opacity='0.3' zIndex="-2" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">石头记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">21</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/page/202012271645.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Connor Haw">
+      <meta itemprop="description" content="不因循苟且，尽人事，听天命。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="石头记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          树的实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-27 16:44:07 / 修改时间：16:52:32" itemprop="dateCreated datePublished" datetime="2020-12-27T16:44:07+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/knowledge/" itemprop="url" rel="index"><span itemprop="name">知识梳理</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  这辈子都没有过什么优越感，光不自卑就已经用尽了全力</p>
+<hr>
+<p>  自己写的一个树形结构，作用是保存(广东省)区下两级的地区码，以后应该可以用于其他树形的用途，稍作记录</p>
+  <a id="more"></a>
+
+<ul>
+<li><p>x_tree.go </p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> x_tree</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"com.x.base/util/x_file"</span></span><br><span class="line">	<span class="string">"com.x.base/util/x_log"</span></span><br><span class="line">	<span class="string">"com.x.base/x_apppath"</span></span><br><span class="line">	<span class="string">"encoding/json"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span>(</span><br><span class="line">	fileNodeList = x_apppath.PATH_CFG + <span class="string">"zonelist.txt"</span></span><br><span class="line">	fileNodeTree = x_apppath.PATH_CFG + <span class="string">"zone.json"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">生成一个树状结构体, 存储区下两级编码</span></span><br><span class="line"><span class="comment">需要根节点的    ParentId = 0</span></span><br><span class="line"><span class="comment">TODO</span></span><br><span class="line"><span class="comment">怎样处理那种游离节点?是否要删除</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">type</span> TreeNode <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id 		 	<span class="keyword">int</span>        	 	<span class="string">`json:"id"`</span></span><br><span class="line">    ParentId 	<span class="keyword">int</span>          	<span class="string">`json:"pid"`</span></span><br><span class="line">    Name 		<span class="keyword">string</span>       	<span class="string">`json:"name"`</span></span><br><span class="line">    Child 		[]*TreeNode  	<span class="string">`json:"child"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> DataTree <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	用于存储 当前所有的 节点信息</span></span><br><span class="line"><span class="comment">	用map是为了方便以后的增删改</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	DataList 	<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	最终生成树的结构体</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	DTree		<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode</span><br><span class="line">	</span><br><span class="line">	lock 		sync.Mutex</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">初始化数据结构</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewDataTree</span><span class="params">()</span> *<span class="title">DataTree</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	dd := &amp;DataTree&#123;</span><br><span class="line">		DataList: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode, <span class="number">0</span>),</span><br><span class="line">		DTree: 	  <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode, <span class="number">0</span>),</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//先从文件中查找, 没有的话才建立一个空的结构体</span></span><br><span class="line">	<span class="keyword">if</span> x_file.ExistsFile(fileNodeList, <span class="literal">false</span>) &#123;</span><br><span class="line"></span><br><span class="line">		buffer := x_file.FileRead1(fileNodeList)</span><br><span class="line">		</span><br><span class="line">		tDataList := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode, <span class="number">0</span>)</span><br><span class="line">		err := json.Unmarshal(*buffer, &amp;tDataList)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			x_log.Err(<span class="string">"error:"</span>, err)</span><br><span class="line">			<span class="keyword">return</span> dd</span><br><span class="line">		&#125;</span><br><span class="line">		dd.DataList = tDataList</span><br><span class="line">		dd.createTree()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dd</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">添加一个节点到树上面去</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">AddNode</span><span class="params">(t *TreeNode)</span></span> &#123;</span><br><span class="line">	d.lock.Lock()</span><br><span class="line">	<span class="keyword">defer</span> d.lock.Unlock()</span><br><span class="line"></span><br><span class="line">	a := TreeNode&#123;</span><br><span class="line">        Id :		t.Id,</span><br><span class="line">        ParentId : 	t.ParentId,</span><br><span class="line">        Name :		t.Name,</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    d.DataList[a.Id] = &amp;a</span><br><span class="line">    d.createTree()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">删除一个节点还有,这个节点以下的所有节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">DeleteNode</span><span class="params">(t *TreeNode)</span></span> &#123;</span><br><span class="line">	d.lock.Lock()</span><br><span class="line">	<span class="keyword">defer</span> d.lock.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> _, ok := d.DataList[t.Id]; ok &#123;</span><br><span class="line">		<span class="built_in">delete</span>(d.DataList, t.Id)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	d.createTree()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">更新一个节点</span></span><br><span class="line"><span class="comment">先删除, 后添加</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span> <span class="title">UpdateNode</span><span class="params">(old *TreeNode, <span class="built_in">new</span> *TreeNode)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	d.DeleteNode(old)</span><br><span class="line">	d.AddNode(<span class="built_in">new</span>)</span><br><span class="line">	d.createTree()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">writeToFile</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//存储所有的list</span></span><br><span class="line">	jsonList, err := json.Marshal(d.DataList)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		x_log.Err(<span class="string">"error"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	x_file.FileWrite1(fileNodeList, jsonList, <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//存储tree 给测试看的, 其实不用写</span></span><br><span class="line">	tt :=<span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> d.DTree &#123;</span><br><span class="line">		<span class="comment">//只生成根目录下的树</span></span><br><span class="line">		<span class="keyword">if</span> value.ParentId == <span class="number">0</span>  &#123;</span><br><span class="line">			tt[value.Id] = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	jsonStr, err := json.Marshal(tt)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		x_log.Err(<span class="string">"error"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	x_file.FileWrite1(fileNodeTree, jsonStr, <span class="literal">false</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//建立树</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span> <span class="title">buildTree</span><span class="params">(nodes []TreeNode)</span></span> &#123;</span><br><span class="line">	d.DTree = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]*TreeNode, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> nodes &#123;</span><br><span class="line">		id := value.Id</span><br><span class="line"></span><br><span class="line">		value.Child = <span class="built_in">make</span>([]*TreeNode, <span class="number">0</span>)</span><br><span class="line">		tt := TreeNode&#123;</span><br><span class="line">			Id:       value.Id,</span><br><span class="line">			ParentId: value.ParentId,</span><br><span class="line">			Name:     value.Name,</span><br><span class="line">		&#125;</span><br><span class="line">		d.DTree[id] = &amp;tt</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vv := <span class="keyword">range</span> d.DTree &#123;</span><br><span class="line">		pid := vv.ParentId</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> _, ok := d.DTree[pid]; ok &#123;</span><br><span class="line">			d.DTree[pid].Child = <span class="built_in">append</span>(d.DTree[pid].Child, vv)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//标准格式 树生成 需要转成标准格式字段</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">createTree</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> nodes []TreeNode</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vv := <span class="keyword">range</span> d.DataList &#123;</span><br><span class="line">		nodes = <span class="built_in">append</span>(nodes, *vv)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//构建树</span></span><br><span class="line">	d.buildTree(nodes)</span><br><span class="line">	d.writeToFile()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">递归获取所有子节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">getAllNodeId</span><span class="params">(node *TreeNode)</span> <span class="params">(nodes []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(node.Child) == <span class="number">0</span> &#123;</span><br><span class="line">		nodes = <span class="built_in">append</span>(nodes, node.Id)</span><br><span class="line">		<span class="keyword">return</span> nodes</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	nodes = <span class="built_in">append</span>(nodes, node.Id)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> _, t := <span class="keyword">range</span> node.Child &#123;</span><br><span class="line">		<span class="keyword">for</span> _, n := <span class="keyword">range</span> d.getAllNodeId(t) &#123;</span><br><span class="line">			nodes = <span class="built_in">append</span>(nodes, n)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> nodes</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">根据一个区域编码， 查找该编码下 所有去下两级的区域信息</span></span><br><span class="line"><span class="comment">查找一个节点的所有子节点, 返回他们的ID</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *DataTree)</span><span class="title">FindChildIdByAreaId</span><span class="params">(areaId <span class="keyword">int</span>)</span> <span class="params">(result []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	_, ok := d.DataList[areaId]</span><br><span class="line">	<span class="keyword">if</span> !ok &#123;</span><br><span class="line">		result = []<span class="keyword">int</span>&#123;areaId&#125;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> d.DTree &#123;</span><br><span class="line">		<span class="keyword">if</span> value.Id == areaId &#123;</span><br><span class="line">			<span class="keyword">return</span> d.getAllNodeId(value)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	result = []<span class="keyword">int</span>&#123;areaId&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tree_test.go</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> x_tree</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"testing"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestTree</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	zone := NewDataTree()</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	z_00 := TreeNode&#123;Id :440000, ParentId : 0, Name : "广东",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_00)</span></span><br><span class="line"><span class="comment">	</span></span><br><span class="line"><span class="comment">    z_1 := TreeNode&#123;Id : 440100 , ParentId :  440000 , Name : "广州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_1 )</span></span><br><span class="line"><span class="comment">    z_2 := TreeNode&#123;Id : 440200 , ParentId :  440000 , Name : "韶关",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_2 )</span></span><br><span class="line"><span class="comment">    z_3 := TreeNode&#123;Id : 440300 , ParentId :  440000 , Name : "深圳",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_3 )</span></span><br><span class="line"><span class="comment">    z_4 := TreeNode&#123;Id : 440400 , ParentId :  440000 , Name : "珠海",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_4 )</span></span><br><span class="line"><span class="comment">    z_5 := TreeNode&#123;Id : 440500 , ParentId :  440000 , Name : "汕头",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_5 )</span></span><br><span class="line"><span class="comment">    z_6 := TreeNode&#123;Id : 440600 , ParentId :  440000 , Name : "佛山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_6 )</span></span><br><span class="line"><span class="comment">    z_7 := TreeNode&#123;Id : 440700 , ParentId :  440000 , Name : "江门",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_7 )</span></span><br><span class="line"><span class="comment">    z_8 := TreeNode&#123;Id : 440800 , ParentId :  440000 , Name : "湛江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_8 )</span></span><br><span class="line"><span class="comment">    z_9 := TreeNode&#123;Id : 440900 , ParentId :  440000 , Name : "茂名",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_9 )</span></span><br><span class="line"><span class="comment">    z_10 := TreeNode&#123;Id : 441200 , ParentId :  440000 , Name : "肇庆",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_10 )</span></span><br><span class="line"><span class="comment">    z_11 := TreeNode&#123;Id : 441300 , ParentId :  440000 , Name : "惠州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_11 )</span></span><br><span class="line"><span class="comment">    z_12 := TreeNode&#123;Id : 441400 , ParentId :  440000 , Name : "梅州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_12 )</span></span><br><span class="line"><span class="comment">    z_13 := TreeNode&#123;Id : 441500 , ParentId :  440000 , Name : "汕尾",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_13 )</span></span><br><span class="line"><span class="comment">    z_14 := TreeNode&#123;Id : 441600 , ParentId :  440000 , Name : "河源",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_14 )</span></span><br><span class="line"><span class="comment">    z_15 := TreeNode&#123;Id : 441700 , ParentId :  440000 , Name : "阳江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_15 )</span></span><br><span class="line"><span class="comment">    z_16 := TreeNode&#123;Id : 441800 , ParentId :  440000 , Name : "清远",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_16 )</span></span><br><span class="line"><span class="comment">    z_17 := TreeNode&#123;Id : 441900 , ParentId :  440000 , Name : "东莞",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_17 )</span></span><br><span class="line"><span class="comment">    z_18 := TreeNode&#123;Id : 442000 , ParentId :  440000 , Name : "中山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_18 )</span></span><br><span class="line"><span class="comment">    z_19 := TreeNode&#123;Id : 445100 , ParentId :  440000 , Name : "潮州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_19 )</span></span><br><span class="line"><span class="comment">    z_20 := TreeNode&#123;Id : 445200 , ParentId :  440000 , Name : "揭阳",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_20 )</span></span><br><span class="line"><span class="comment">    z_21 := TreeNode&#123;Id : 445300 , ParentId :  440000 , Name : "云浮",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_21 )</span></span><br><span class="line"><span class="comment">    z_22 := TreeNode&#123;Id : 445301 , ParentId :  445300 , Name : "罗定",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_22 )</span></span><br><span class="line"><span class="comment">    z_23 := TreeNode&#123;Id : 440701 , ParentId :  440700 , Name : "开平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_23 )</span></span><br><span class="line"><span class="comment">    z_24 := TreeNode&#123;Id : 442001 , ParentId :  442000 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_24 )</span></span><br><span class="line"><span class="comment">    z_25 := TreeNode&#123;Id : 441801 , ParentId :  441800 , Name : "连州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_25 )</span></span><br><span class="line"><span class="comment">    z_26 := TreeNode&#123;Id : 440201 , ParentId :  440200 , Name : "翁源",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_26 )</span></span><br><span class="line"><span class="comment">    z_27 := TreeNode&#123;Id : 440101 , ParentId :  440100 , Name : "从化",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_27 )</span></span><br><span class="line"><span class="comment">    z_28 := TreeNode&#123;Id : 440801 , ParentId :  440800 , Name : "赤坎",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_28 )</span></span><br><span class="line"><span class="comment">    z_29 := TreeNode&#123;Id : 441901 , ParentId :  441900 , Name : "莞城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_29 )</span></span><br><span class="line"><span class="comment">    z_30 := TreeNode&#123;Id : 445302 , ParentId :  445300 , Name : "云安",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_30 )</span></span><br><span class="line"><span class="comment">    z_31 := TreeNode&#123;Id : 445201 , ParentId :  445200 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_31 )</span></span><br><span class="line"><span class="comment">    z_32 := TreeNode&#123;Id : 441902 , ParentId :  441900 , Name : "道滘",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_32 )</span></span><br><span class="line"><span class="comment">    z_33 := TreeNode&#123;Id : 441401 , ParentId :  441400 , Name : "丰顺",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_33 )</span></span><br><span class="line"><span class="comment">    z_34 := TreeNode&#123;Id : 440401 , ParentId :  440400 , Name : "前山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_34 )</span></span><br><span class="line"><span class="comment">    z_35 := TreeNode&#123;Id : 441903 , ParentId :  441900 , Name : "长安",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_35 )</span></span><br><span class="line"><span class="comment">    z_36 := TreeNode&#123;Id : 445202 , ParentId :  445200 , Name : "揭西",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_36 )</span></span><br><span class="line"><span class="comment">    z_37 := TreeNode&#123;Id : 441904 , ParentId :  441900 , Name : "樟木头",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_37 )</span></span><br><span class="line"><span class="comment">    z_38 := TreeNode&#123;Id : 440402 , ParentId :  440400 , Name : "香洲",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_38 )</span></span><br><span class="line"><span class="comment">    z_39 := TreeNode&#123;Id : 440702 , ParentId :  440700 , Name : "新会",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_39 )</span></span><br><span class="line"><span class="comment">    z_40 := TreeNode&#123;Id : 441402 , ParentId :  441400 , Name : "五华",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_40 )</span></span><br><span class="line"><span class="comment">    z_41 := TreeNode&#123;Id : 445101 , ParentId :  445100 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_41 )</span></span><br><span class="line"><span class="comment">    z_42 := TreeNode&#123;Id : 440802 , ParentId :  440800 , Name : "徐闻",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_42 )</span></span><br><span class="line"><span class="comment">    z_43 := TreeNode&#123;Id : 440301 , ParentId :  440300 , Name : "宝安",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_43 )</span></span><br><span class="line"><span class="comment">    z_44 := TreeNode&#123;Id : 440102 , ParentId :  440100 , Name : "南沙",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_44 )</span></span><br><span class="line"><span class="comment">    z_45 := TreeNode&#123;Id : 440901 , ParentId :  440900 , Name : "化州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_45 )</span></span><br><span class="line"><span class="comment">    z_46 := TreeNode&#123;Id : 441802 , ParentId :  441800 , Name : "英德",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_46 )</span></span><br><span class="line"><span class="comment">    z_47 := TreeNode&#123;Id : 441905 , ParentId :  441900 , Name : "石龙",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_47 )</span></span><br><span class="line"><span class="comment">    z_48 := TreeNode&#123;Id : 441906 , ParentId :  441900 , Name : "石碣",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_48 )</span></span><br><span class="line"><span class="comment">    z_49 := TreeNode&#123;Id : 441907 , ParentId :  441900 , Name : "企石",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_49 )</span></span><br><span class="line"><span class="comment">    z_50 := TreeNode&#123;Id : 440703 , ParentId :  440700 , Name : "鹤山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_50 )</span></span><br><span class="line"><span class="comment">    z_51 := TreeNode&#123;Id : 440704 , ParentId :  440700 , Name : "台山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_51 )</span></span><br><span class="line"><span class="comment">    z_52 := TreeNode&#123;Id : 440202 , ParentId :  440200 , Name : "乐昌",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_52 )</span></span><br><span class="line"><span class="comment">    z_53 := TreeNode&#123;Id : 440302 , ParentId :  440300 , Name : "福田",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_53 )</span></span><br><span class="line"><span class="comment">    z_54 := TreeNode&#123;Id : 441908 , ParentId :  441900 , Name : "高埗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_54 )</span></span><br><span class="line"><span class="comment">    z_55 := TreeNode&#123;Id : 441909 , ParentId :  441900 , Name : "厚街",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_55 )</span></span><br><span class="line"><span class="comment">    z_56 := TreeNode&#123;Id : 441910 , ParentId :  441900 , Name : "石排",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_56 )</span></span><br><span class="line"><span class="comment">    z_57 := TreeNode&#123;Id : 440902 , ParentId :  440900 , Name : "茂南",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_57 )</span></span><br><span class="line"><span class="comment">    z_58 := TreeNode&#123;Id : 441911 , ParentId :  441900 , Name : "茶山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_58 )</span></span><br><span class="line"><span class="comment">    z_59 := TreeNode&#123;Id : 441912 , ParentId :  441900 , Name : "麻涌",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_59 )</span></span><br><span class="line"><span class="comment">    z_60 := TreeNode&#123;Id : 441403 , ParentId :  441400 , Name : "蕉岭",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_60 )</span></span><br><span class="line"><span class="comment">    z_61 := TreeNode&#123;Id : 440203 , ParentId :  440200 , Name : "曲江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_61 )</span></span><br><span class="line"><span class="comment">    z_62 := TreeNode&#123;Id : 441201 , ParentId :  441200 , Name : "怀集",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_62 )</span></span><br><span class="line"><span class="comment">    z_63 := TreeNode&#123;Id : 441202 , ParentId :  441200 , Name : "端州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_63 )</span></span><br><span class="line"><span class="comment">    z_64 := TreeNode&#123;Id : 441913 , ParentId :  441900 , Name : "凤岗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_64 )</span></span><br><span class="line"><span class="comment">    z_65 := TreeNode&#123;Id : 442002 , ParentId :  442000 , Name : "南部",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_65 )</span></span><br><span class="line"><span class="comment">    z_66 := TreeNode&#123;Id : 441914 , ParentId :  441900 , Name : "东城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_66 )</span></span><br><span class="line"><span class="comment">    z_67 := TreeNode&#123;Id : 440601 , ParentId :  440600 , Name : "三水",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_67 )</span></span><br><span class="line"><span class="comment">    z_68 := TreeNode&#123;Id : 440303 , ParentId :  440300 , Name : "盐田",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_68 )</span></span><br><span class="line"><span class="comment">    z_69 := TreeNode&#123;Id : 441701 , ParentId :  441700 , Name : "高新",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_69 )</span></span><br><span class="line"><span class="comment">    z_70 := TreeNode&#123;Id : 440803 , ParentId :  440800 , Name : "吴川",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_70 )</span></span><br><span class="line"><span class="comment">    z_71 := TreeNode&#123;Id : 440705 , ParentId :  440700 , Name : "恩平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_71 )</span></span><br><span class="line"><span class="comment">    z_72 := TreeNode&#123;Id : 441404 , ParentId :  441400 , Name : "梅江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_72 )</span></span><br><span class="line"><span class="comment">    z_73 := TreeNode&#123;Id : 441915 , ParentId :  441900 , Name : "黄江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_73 )</span></span><br><span class="line"><span class="comment">    z_74 := TreeNode&#123;Id : 440103 , ParentId :  440100 , Name : "白云",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_74 )</span></span><br><span class="line"><span class="comment">    z_75 := TreeNode&#123;Id : 441301 , ParentId :  441300 , Name : "惠阳",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_75 )</span></span><br><span class="line"><span class="comment">    z_76 := TreeNode&#123;Id : 445102 , ParentId :  445100 , Name : "潮安",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_76 )</span></span><br><span class="line"><span class="comment">    z_77 := TreeNode&#123;Id : 445203 , ParentId :  445200 , Name : "揭东",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_77 )</span></span><br><span class="line"><span class="comment">    z_78 := TreeNode&#123;Id : 441501 , ParentId :  441500 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_78 )</span></span><br><span class="line"><span class="comment">    z_79 := TreeNode&#123;Id : 445303 , ParentId :  445300 , Name : "新兴",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_79 )</span></span><br><span class="line"><span class="comment">    z_80 := TreeNode&#123;Id : 441916 , ParentId :  441900 , Name : "清溪",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_80 )</span></span><br><span class="line"><span class="comment">    z_81 := TreeNode&#123;Id : 442003 , ParentId :  442000 , Name : "东部",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_81 )</span></span><br><span class="line"><span class="comment">    z_82 := TreeNode&#123;Id : 441702 , ParentId :  441700 , Name : "阳西",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_82 )</span></span><br><span class="line"><span class="comment">    z_83 := TreeNode&#123;Id : 441502 , ParentId :  441500 , Name : "陆河",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_83 )</span></span><br><span class="line"><span class="comment">    z_84 := TreeNode&#123;Id : 440104 , ParentId :  440100 , Name : "增城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_84 )</span></span><br><span class="line"><span class="comment">    z_85 := TreeNode&#123;Id : 440602 , ParentId :  440600 , Name : "顺德",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_85 )</span></span><br><span class="line"><span class="comment">    z_86 := TreeNode&#123;Id : 442004 , ParentId :  442000 , Name : "西部",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_86 )</span></span><br><span class="line"><span class="comment">    z_87 := TreeNode&#123;Id : 441917 , ParentId :  441900 , Name : "塘厦",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_87 )</span></span><br><span class="line"><span class="comment">    z_88 := TreeNode&#123;Id : 442005 , ParentId :  442000 , Name : "小榄",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_88 )</span></span><br><span class="line"><span class="comment">    z_89 := TreeNode&#123;Id : 440204 , ParentId :  440200 , Name : "新丰",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_89 )</span></span><br><span class="line"><span class="comment">    z_90 := TreeNode&#123;Id : 441803 , ParentId :  441800 , Name : "佛冈",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_90 )</span></span><br><span class="line"><span class="comment">    z_91 := TreeNode&#123;Id : 445204 , ParentId :  445200 , Name : "普宁",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_91 )</span></span><br><span class="line"><span class="comment">    z_92 := TreeNode&#123;Id : 441804 , ParentId :  441800 , Name : "阳山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_92 )</span></span><br><span class="line"><span class="comment">    z_93 := TreeNode&#123;Id : 441203 , ParentId :  441200 , Name : "高要",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_93 )</span></span><br><span class="line"><span class="comment">    z_94 := TreeNode&#123;Id : 440804 , ParentId :  440800 , Name : "霞山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_94 )</span></span><br><span class="line"><span class="comment">    z_95 := TreeNode&#123;Id : 441204 , ParentId :  441200 , Name : "德庆",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_95 )</span></span><br><span class="line"><span class="comment">    z_96 := TreeNode&#123;Id : 441918 , ParentId :  441900 , Name : "大岭山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_96 )</span></span><br><span class="line"><span class="comment">    z_97 := TreeNode&#123;Id : 441919 , ParentId :  441900 , Name : "万江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_97 )</span></span><br><span class="line"><span class="comment">    z_98 := TreeNode&#123;Id : 441920 , ParentId :  441900 , Name : "常平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_98 )</span></span><br><span class="line"><span class="comment">    z_99 := TreeNode&#123;Id : 445304 , ParentId :  445300 , Name : "郁南",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_99 )</span></span><br><span class="line"><span class="comment">    z_100 := TreeNode&#123;Id : 441405 , ParentId :  441400 , Name : "大埔",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_100 )</span></span><br><span class="line"><span class="comment">    z_101 := TreeNode&#123;Id : 441406 , ParentId :  441400 , Name : "兴宁",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_101 )</span></span><br><span class="line"><span class="comment">    z_102 := TreeNode&#123;Id : 440205 , ParentId :  440200 , Name : "乳源",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_102 )</span></span><br><span class="line"><span class="comment">    z_103 := TreeNode&#123;Id : 441921 , ParentId :  441900 , Name : "寮步",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_103 )</span></span><br><span class="line"><span class="comment">    z_104 := TreeNode&#123;Id : 440105 , ParentId :  440100 , Name : "东山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_104 )</span></span><br><span class="line"><span class="comment">    z_105 := TreeNode&#123;Id : 440106 , ParentId :  440100 , Name : "黄萝",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_105 )</span></span><br><span class="line"><span class="comment">    z_106 := TreeNode&#123;Id : 440501 , ParentId :  440500 , Name : "南澳",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_106 )</span></span><br><span class="line"><span class="comment">    z_107 := TreeNode&#123;Id : 441302 , ParentId :  441300 , Name : "龙门",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_107 )</span></span><br><span class="line"><span class="comment">    z_108 := TreeNode&#123;Id : 440403 , ParentId :  440400 , Name : "金湾",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_108 )</span></span><br><span class="line"><span class="comment">    z_109 := TreeNode&#123;Id : 440206 , ParentId :  440200 , Name : "仁化",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_109 )</span></span><br><span class="line"><span class="comment">    z_110 := TreeNode&#123;Id : 441205 , ParentId :  441200 , Name : "四会",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_110 )</span></span><br><span class="line"><span class="comment">    z_111 := TreeNode&#123;Id : 441601 , ParentId :  441600 , Name : "紫金",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_111 )</span></span><br><span class="line"><span class="comment">    z_112 := TreeNode&#123;Id : 440706 , ParentId :  440700 , Name : "江海",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_112 )</span></span><br><span class="line"><span class="comment">    z_113 := TreeNode&#123;Id : 445103 , ParentId :  445100 , Name : "饶平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_113 )</span></span><br><span class="line"><span class="comment">    z_114 := TreeNode&#123;Id : 440502 , ParentId :  440500 , Name : "潮南",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_114 )</span></span><br><span class="line"><span class="comment">    z_115 := TreeNode&#123;Id : 440107 , ParentId :  440100 , Name : "番禺",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_115 )</span></span><br><span class="line"><span class="comment">    z_116 := TreeNode&#123;Id : 441407 , ParentId :  441400 , Name : "平远",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_116 )</span></span><br><span class="line"><span class="comment">    z_117 := TreeNode&#123;Id : 440707 , ParentId :  440700 , Name : "蓬江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_117 )</span></span><br><span class="line"><span class="comment">    z_118 := TreeNode&#123;Id : 441206 , ParentId :  441200 , Name : "鼎湖",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_118 )</span></span><br><span class="line"><span class="comment">    z_119 := TreeNode&#123;Id : 442006 , ParentId :  442000 , Name : "北部",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_119 )</span></span><br><span class="line"><span class="comment">    z_120 := TreeNode&#123;Id : 440404 , ParentId :  440400 , Name : "拱北",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_120 )</span></span><br><span class="line"><span class="comment">    z_121 := TreeNode&#123;Id : 441922 , ParentId :  441900 , Name : "桥头",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_121 )</span></span><br><span class="line"><span class="comment">    z_122 := TreeNode&#123;Id : 441923 , ParentId :  441900 , Name : "南城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_122 )</span></span><br><span class="line"><span class="comment">    z_123 := TreeNode&#123;Id : 441805 , ParentId :  441800 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_123 )</span></span><br><span class="line"><span class="comment">    z_124 := TreeNode&#123;Id : 441303 , ParentId :  441300 , Name : "大亚湾",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_124 )</span></span><br><span class="line"><span class="comment">    z_125 := TreeNode&#123;Id : 440405 , ParentId :  440400 , Name : "斗门",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_125 )</span></span><br><span class="line"><span class="comment">    z_126 := TreeNode&#123;Id : 440304 , ParentId :  440300 , Name : "龙岗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_126 )</span></span><br><span class="line"><span class="comment">    z_127 := TreeNode&#123;Id : 441602 , ParentId :  441600 , Name : "东源",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_127 )</span></span><br><span class="line"><span class="comment">    z_128 := TreeNode&#123;Id : 440108 , ParentId :  440100 , Name : "越秀",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_128 )</span></span><br><span class="line"><span class="comment">    z_129 := TreeNode&#123;Id : 441806 , ParentId :  441800 , Name : "连南",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_129 )</span></span><br><span class="line"><span class="comment">    z_130 := TreeNode&#123;Id : 441924 , ParentId :  441900 , Name : "望牛墩",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_130 )</span></span><br><span class="line"><span class="comment">    z_131 := TreeNode&#123;Id : 441925 , ParentId :  441900 , Name : "虎门",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_131 )</span></span><br><span class="line"><span class="comment">    z_132 := TreeNode&#123;Id : 441926 , ParentId :  441900 , Name : "松山湖",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_132 )</span></span><br><span class="line"><span class="comment">    z_133 := TreeNode&#123;Id : 440503 , ParentId :  440500 , Name : "潮阳",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_133 )</span></span><br><span class="line"><span class="comment">    z_134 := TreeNode&#123;Id : 440805 , ParentId :  440800 , Name : "雷州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_134 )</span></span><br><span class="line"><span class="comment">    z_135 := TreeNode&#123;Id : 441207 , ParentId :  441200 , Name : "广宁",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_135 )</span></span><br><span class="line"><span class="comment">    z_136 := TreeNode&#123;Id : 440109 , ParentId :  440100 , Name : "荔湾",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_136 )</span></span><br><span class="line"><span class="comment">    z_137 := TreeNode&#123;Id : 440903 , ParentId :  440900 , Name : "高州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_137 )</span></span><br><span class="line"><span class="comment">    z_138 := TreeNode&#123;Id : 440207 , ParentId :  440200 , Name : "南雄",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_138 )</span></span><br><span class="line"><span class="comment">    z_139 := TreeNode&#123;Id : 440110 , ParentId :  440100 , Name : "天河",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_139 )</span></span><br><span class="line"><span class="comment">    z_140 := TreeNode&#123;Id : 441603 , ParentId :  441600 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_140 )</span></span><br><span class="line"><span class="comment">    z_141 := TreeNode&#123;Id : 440603 , ParentId :  440600 , Name : "高明",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_141 )</span></span><br><span class="line"><span class="comment">    z_142 := TreeNode&#123;Id : 440305 , ParentId :  440300 , Name : "南山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_142 )</span></span><br><span class="line"><span class="comment">    z_143 := TreeNode&#123;Id : 440504 , ParentId :  440500 , Name : "澄海",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_143 )</span></span><br><span class="line"><span class="comment">    z_144 := TreeNode&#123;Id : 441807 , ParentId :  441800 , Name : "清新",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_144 )</span></span><br><span class="line"><span class="comment">    z_145 := TreeNode&#123;Id : 441927 , ParentId :  441900 , Name : "中堂",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_145 )</span></span><br><span class="line"><span class="comment">    z_146 := TreeNode&#123;Id : 441304 , ParentId :  441300 , Name : "惠东",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_146 )</span></span><br><span class="line"><span class="comment">    z_147 := TreeNode&#123;Id : 441305 , ParentId :  441300 , Name : "博罗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_147 )</span></span><br><span class="line"><span class="comment">    z_148 := TreeNode&#123;Id : 441408 , ParentId :  441400 , Name : "梅县",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_148 )</span></span><br><span class="line"><span class="comment">    z_149 := TreeNode&#123;Id : 445205 , ParentId :  445200 , Name : "惠来",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_149 )</span></span><br><span class="line"><span class="comment">    z_150 := TreeNode&#123;Id : 441208 , ParentId :  441200 , Name : "高新",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_150 )</span></span><br><span class="line"><span class="comment">    z_151 := TreeNode&#123;Id : 440306 , ParentId :  440300 , Name : "蛇口",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_151 )</span></span><br><span class="line"><span class="comment">    z_152 := TreeNode&#123;Id : 440307 , ParentId :  440300 , Name : "坪山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_152 )</span></span><br><span class="line"><span class="comment">    z_153 := TreeNode&#123;Id : 440505 , ParentId :  440500 , Name : "濠江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_153 )</span></span><br><span class="line"><span class="comment">    z_154 := TreeNode&#123;Id : 441808 , ParentId :  441800 , Name : "连山",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_154 )</span></span><br><span class="line"><span class="comment">    z_155 := TreeNode&#123;Id : 440806 , ParentId :  440800 , Name : "遂溪",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_155 )</span></span><br><span class="line"><span class="comment">    z_156 := TreeNode&#123;Id : 441306 , ParentId :  441300 , Name : "惠城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_156 )</span></span><br><span class="line"><span class="comment">    z_157 := TreeNode&#123;Id : 445305 , ParentId :  445300 , Name : "云城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_157 )</span></span><br><span class="line"><span class="comment">    z_158 := TreeNode&#123;Id : 441703 , ParentId :  441700 , Name : "阳东",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_158 )</span></span><br><span class="line"><span class="comment">    z_159 := TreeNode&#123;Id : 441307 , ParentId :  441300 , Name : "仲恺新区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_159 )</span></span><br><span class="line"><span class="comment">    z_160 := TreeNode&#123;Id : 440308 , ParentId :  440300 , Name : "光明",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_160 )</span></span><br><span class="line"><span class="comment">    z_161 := TreeNode&#123;Id : 440208 , ParentId :  440200 , Name : "城区",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_161 )</span></span><br><span class="line"><span class="comment">    z_162 := TreeNode&#123;Id : 441503 , ParentId :  441500 , Name : "海丰",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_162 )</span></span><br><span class="line"><span class="comment">    z_163 := TreeNode&#123;Id : 440904 , ParentId :  440900 , Name : "电白",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_163 )</span></span><br><span class="line"><span class="comment">    z_164 := TreeNode&#123;Id : 440111 , ParentId :  440100 , Name : "海珠",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_164 )</span></span><br><span class="line"><span class="comment">    z_165 := TreeNode&#123;Id : 441928 , ParentId :  441900 , Name : "洪梅",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_165 )</span></span><br><span class="line"><span class="comment">    z_166 := TreeNode&#123;Id : 440309 , ParentId :  440300 , Name : "罗湖",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_166 )</span></span><br><span class="line"><span class="comment">    z_167 := TreeNode&#123;Id : 440506 , ParentId :  440500 , Name : "龙湖",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_167 )</span></span><br><span class="line"><span class="comment">    z_168 := TreeNode&#123;Id : 440807 , ParentId :  440800 , Name : "廉江",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_168 )</span></span><br><span class="line"><span class="comment">    z_169 := TreeNode&#123;Id : 441704 , ParentId :  441700 , Name : "江城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_169 )</span></span><br><span class="line"><span class="comment">    z_170 := TreeNode&#123;Id : 441705 , ParentId :  441700 , Name : "阳春",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_170 )</span></span><br><span class="line"><span class="comment">    z_171 := TreeNode&#123;Id : 440310 , ParentId :  440300 , Name : "龙华",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_171 )</span></span><br><span class="line"><span class="comment">    z_172 := TreeNode&#123;Id : 440209 , ParentId :  440200 , Name : "始兴",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_172 )</span></span><br><span class="line"><span class="comment">    z_173 := TreeNode&#123;Id : 440112 , ParentId :  440100 , Name : "花都",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_173 )</span></span><br><span class="line"><span class="comment">    z_174 := TreeNode&#123;Id : 440905 , ParentId :  440900 , Name : "雷州",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_174 )</span></span><br><span class="line"><span class="comment">    z_175 := TreeNode&#123;Id : 440604 , ParentId :  440600 , Name : "南海",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_175 )</span></span><br><span class="line"><span class="comment">    z_176 := TreeNode&#123;Id : 441604 , ParentId :  441600 , Name : "和平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_176 )</span></span><br><span class="line"><span class="comment">    z_177 := TreeNode&#123;Id : 440507 , ParentId :  440500 , Name : "金平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_177 )</span></span><br><span class="line"><span class="comment">    z_178 := TreeNode&#123;Id : 441929 , ParentId :  441900 , Name : "大朗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_178 )</span></span><br><span class="line"><span class="comment">    z_179 := TreeNode&#123;Id : 441605 , ParentId :  441600 , Name : "龙川",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_179 )</span></span><br><span class="line"><span class="comment">    z_180 := TreeNode&#123;Id : 441930 , ParentId :  441900 , Name : "横沥",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_180 )</span></span><br><span class="line"><span class="comment">    z_181 := TreeNode&#123;Id : 441931 , ParentId :  441900 , Name : "东坑",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_181 )</span></span><br><span class="line"><span class="comment">    z_182 := TreeNode&#123;Id : 440406 , ParentId :  440400 , Name : "横琴",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_182 )</span></span><br><span class="line"><span class="comment">    z_183 := TreeNode&#123;Id : 441932 , ParentId :  441900 , Name : "沙田",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_183 )</span></span><br><span class="line"><span class="comment">    z_184 := TreeNode&#123;Id : 441504 , ParentId :  441500 , Name : "陆丰",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_184 )</span></span><br><span class="line"><span class="comment">    z_185 := TreeNode&#123;Id : 440605 , ParentId :  440600 , Name : "禅城",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_185 )</span></span><br><span class="line"><span class="comment">    z_186 := TreeNode&#123;Id : 441933 , ParentId :  441900 , Name : "谢岗",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_186 )</span></span><br><span class="line"><span class="comment">    z_187 := TreeNode&#123;Id : 441606 , ParentId :  441600 , Name : "连平",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_187 )</span></span><br><span class="line"><span class="comment">    z_188 := TreeNode&#123;Id : 440906 , ParentId :  440900 , Name : "信宜",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_188 )</span></span><br><span class="line"><span class="comment">    z_189 := TreeNode&#123;Id : 441209 , ParentId :  441200 , Name : "封开",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_189 )</span></span><br><span class="line"><span class="comment">    z_190 := TreeNode&#123;Id : 50000 , ParentId :  440603 , Name : "难难难",&#125;</span></span><br><span class="line"><span class="comment">    zone.AddNode(&amp;z_190 )</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    zone.CreateTree()</span></span><br><span class="line"><span class="comment">   	zone.WriteToFile()</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	z_190 := TreeNode&#123;Id : <span class="number">50000</span> , ParentId :  <span class="number">440603</span> , Name : <span class="string">"难难难"</span>,&#125;</span><br><span class="line">    zone.AddNode(&amp;z_190 )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//z_191 := TreeNode&#123;Id : 50001 , ParentId :  440603 , Name : "难难难",&#125;</span></span><br><span class="line">    <span class="comment">//zone.AddNode(&amp;z_191 )</span></span><br><span class="line">	<span class="comment">//zone.UpdateNode(&amp;z_190, &amp;z_191)</span></span><br><span class="line">	<span class="comment">//zone.CreateTree()</span></span><br><span class="line">	<span class="comment">//zone.WriteToFile()</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">//zone.CreateTree()</span></span><br><span class="line">	<span class="comment">//zone.WriteToFile()</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">//fmt.Println("更新1", zone.FindChildIdByAreaId(440600))</span></span><br><span class="line"></span><br><span class="line">	z_192 := TreeNode&#123;Id : <span class="number">50000</span> , ParentId :  <span class="number">441900</span> , Name : <span class="string">"难难难"</span>,&#125;</span><br><span class="line">    zone.UpdateNode(&amp;z_190, &amp;z_192)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">"更新2"</span>, zone.FindChildIdByAreaId(<span class="number">440600</span>))</span><br><span class="line">	fmt.Println(<span class="string">"更新3"</span>, zone.FindChildIdByAreaId(<span class="number">441900</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>原创技术分享，您的支持将鼓励我继续创作</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechat.jpg" alt="Connor Haw 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Connor Haw 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/page/202011291930.html" rel="prev" title="2020年11月小结">
+      <i class="fa fa-chevron-left"></i> 2020年11月小结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/page/202012271650.html" rel="next" title="2020年年终总结">
+      2020年年终总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Connor Haw</p>
+  <div class="site-description" itemprop="description">不因循苟且，尽人事，听天命。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+      <!-- music -->
+      <div>
+        
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="260" height="52" src="https://music.163.com/outchain/player?type=2&id=1403860789&auto=0&height=32"></iframe>
+        
+      </div>
+
+    </div>
+    
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Connor Haw</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
