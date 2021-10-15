@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff9f4b;
+  background: #bdffc7;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2142,7 +2142,7 @@ ul.breadcrumb li + li:last-child {
   color: var(--link-hover-color) !important;
 }
 body {
-  background: url("/images/hx_bg.jpg");
+  background: url("/images/sea.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
