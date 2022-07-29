@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a18ce9;
+  background: #413328;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2142,7 +2142,7 @@ ul.breadcrumb li + li:last-child {
   color: var(--link-hover-color) !important;
 }
 body {
-  background: url("/images/sea.jpg");
+  background: url("/images/hongfang.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
